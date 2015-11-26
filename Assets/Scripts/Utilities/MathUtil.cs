@@ -37,4 +37,14 @@ public static class MathUtil {
 		float y = origin.y + distance * Mathf.Sin (angle);
 		return new Vector2 (x, y);
 	}
+
+	/// <summary>
+	/// Gets an angular translation in radians given an arc length travelled and the arc's radius.
+	/// </summary>
+	/// <returns>The angular translation travelled in radians.</returns>
+	/// <param name="length">Length of the arc.</param>
+	/// <param name="radius">Radius of the arc.</param>
+	public static float AngleFromArcLength (float length, float radius) {
+		return length / radius;
+	}
 }
