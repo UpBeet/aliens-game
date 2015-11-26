@@ -77,7 +77,7 @@ public class SpaceMass : MonoBehaviour {
 	/// </summary>
 	void Update () {
 
-		if (Input.GetMouseButtonDown (0))
+		if (Input.GetMouseButtonUp (0))
 		{
 			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 touchPos = new Vector2(wp.x, wp.y);

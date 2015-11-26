@@ -39,5 +39,8 @@ public class UserInterface : MonoBehaviour {
 
 		// Show the panel.
 		selectedPlanetPanel.Show ();
+
+		// Focus the camera on the selected planet.
+		Camera.main.GetComponent<CameraDrag> ().Follow (selected.transform);
 	}
 }
