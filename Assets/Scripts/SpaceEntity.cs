@@ -6,6 +6,11 @@
 public class SpaceEntity : MonoBehaviour {
 
 	/// <summary>
+	/// The frequency that this entity updates its AI behaviors.
+	/// </summary>
+	private const float BEHAVIOR_UPDATE_FREQUENCY = 2f;
+
+	/// <summary>
 	/// A space entity's home is the SpaceMass they are bound to.
 	/// </summary>
 	[SerializeField] private SpaceMass home = null;
@@ -14,6 +19,11 @@ public class SpaceEntity : MonoBehaviour {
 	/// The angle to the center of the entity's current home. If home is null, this value is meaningless.
 	/// </summary>
 	private float angleToHome;
+
+	/// <summary>
+	/// This entity's idle wandering velocity.
+	/// </summary>
+	private float wanderingVelocity = 0;
 
 	/// <summary>
 	/// Initialize this component.
@@ -33,7 +43,7 @@ public class SpaceEntity : MonoBehaviour {
 
 		// Test entity walking around on home.
 		if (home != null) {
-			MoveAlongSurface (1f * Time.deltaTime);
+			MoveAlongSurface (wanderingVelocity * Time.deltaTime);
 		}
 	}
 
@@ -42,6 +52,16 @@ public class SpaceEntity : MonoBehaviour {
 	/// </summary>
 	/// <param name="spaceMass">New SpaceMass home for this entity.</param>
 	public void AttachToSpaceMass (SpaceMass spaceMass) {
+
+		// Cancel idle wandering.
+		CancelInvoke ("UpdateIdleWandering");
+
+		// Base case: detachment.
+		if (spaceMass == null) {
+			home = null;
+			transform.SetParent (null);
+			return;
+		}
 
 		// Attach the entity to the space mass.
 		home = spaceMass;
@@ -52,6 +72,9 @@ public class SpaceEntity : MonoBehaviour {
 
 		// Update the entity's position against its new home mass.
 		UpdatePosition ();
+
+		// Reset idle wandering.
+		InvokeRepeating ("UpdateIdleWandering", Random.Range (0, BEHAVIOR_UPDATE_FREQUENCY), BEHAVIOR_UPDATE_FREQUENCY);
 	}
 
 	/// <summary>
@@ -87,5 +110,20 @@ public class SpaceEntity : MonoBehaviour {
 			// Make this entity face inwards.
 			transform.localRotation = Quaternion.Euler (0, 0, Mathf.Rad2Deg * angleToHome - 90);
 		}
+	}
+
+	/// <summary>
+	/// Updates the idle wandering behavior.
+	/// </summary>
+	private void UpdateIdleWandering () {
+
+		// Base case: home is null.
+		if (home == null) {
+			Debug.LogError ("This entity does not have a home to wander on!", this);
+			return;
+		}
+
+		// Re-roll the wandering velocity.
+		wanderingVelocity = Random.Range (-1, 2);
 	}
 }
