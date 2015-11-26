@@ -88,4 +88,25 @@ public class SpaceMass : MonoBehaviour {
 				distanceToPrimary, angleToPrimary,orbitalPrimary.transform.position);
 		}
 	}
+
+	/// <summary>
+	/// Reinitialize this space mass.
+	/// </summary>
+	/// <param name="size">Size.</param>
+	/// <param name="orbitalPrimary">Orbital primary.</param>
+	/// <param name="orbitSpeed">Orbit speed.</param>
+	/// <param name="orbitsClockwise">If set to <c>true</c> orbits clockwise.</param>
+	/// <param name="orbitRadius">Orbit radius.</param>
+	/// <param name="startAngle">Start angle.</param>
+	public void Initialize (float size, SpaceMass orbitalPrimary, float orbitSpeed,
+		bool orbitsClockwise, float orbitRadius, float startAngle) {
+
+		this.size = size;
+		this.orbitalPrimary = orbitalPrimary;
+		this.orbitSpeed = orbitSpeed;
+		this.orbitsClockwise = orbitsClockwise;
+
+		transform.position = MathUtil.RadialPosition (orbitRadius, startAngle,
+			orbitalPrimary == null ? Vector3.zero : orbitalPrimary.transform.position);
+	}
 }
