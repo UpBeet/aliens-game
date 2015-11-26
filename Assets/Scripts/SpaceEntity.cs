@@ -27,6 +27,17 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Update this component.
+	/// </summary>
+	void Update () {
+
+		// Test entity walking around on home.
+		if (home != null) {
+			MoveAlongSurface (1f * Time.deltaTime);
+		}
+	}
+
+	/// <summary>
 	/// Attaches this entity to the specified SpaceMass.
 	/// </summary>
 	/// <param name="spaceMass">New SpaceMass home for this entity.</param>
@@ -44,14 +55,37 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Moves this entity a given distance along their home's surface.
+	/// </summary>
+	/// <param name="distance">Distance moved clockwise.</param>
+	public void MoveAlongSurface (float distance) {
+
+		// Base case: home is null.
+		if (home == null) {
+			Debug.LogError ("This entity does not have a home to walk on!", this);
+			return;
+		}
+
+		// Calculate the new angle against the center of the home.
+		angleToHome += MathUtil.AngleFromArcLength (-1 * distance, home.Radius);
+
+		// Update the entity's position against its home mass.
+		UpdatePosition ();
+	}
+
+	/// <summary>
 	/// Updates the position of this entity so that it respects its home dimensions.
 	/// </summary>
 	private void UpdatePosition () {
 
-		// Reposition the entity so that it lingers on the edge of the mass.
-		transform.localPosition = MathUtil.LocalRadialPosition (home.Radius, angleToHome);
+		// If this entity has a home, attach to it physically.
+		if (home != null) {
 
-		// Make this entity face inwards.
-		transform.localRotation = Quaternion.Euler (0, 0, Mathf.Rad2Deg * angleToHome - 90);
+			// Reposition the entity so that it lingers on the edge of the mass.
+			transform.localPosition = MathUtil.LocalRadialPosition (home.Radius, angleToHome);
+
+			// Make this entity face inwards.
+			transform.localRotation = Quaternion.Euler (0, 0, Mathf.Rad2Deg * angleToHome - 90);
+		}
 	}
 }
