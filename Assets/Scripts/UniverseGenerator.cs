@@ -88,6 +88,7 @@ public class UniverseGenerator : MonoBehaviour {
 
 		// Initialize space mass with procedural values.
 		SpaceMass newSpaceMass = Instantiate (spaceMassPrefab);
+		newSpaceMass.name = "" + Random.Range (0, 100);
 		newSpaceMass.Initialize (
 			size,
 			primary,
