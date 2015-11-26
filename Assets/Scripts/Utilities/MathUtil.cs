@@ -47,4 +47,23 @@ public static class MathUtil {
 	public static float AngleFromArcLength (float length, float radius) {
 		return length / radius;
 	}
+
+	/// <summary>
+	/// Gets a random number along the normal distribution
+	/// </summary>
+	/// <returns>The from normal distribution.</returns>
+	public static float RandomFromNormalDistribution (float mean = 0, float stdDev = 1, bool positiveOnly = false) {
+
+		// Get the random standard deviation.
+		float randStdNormal = Mathf.Sqrt(-2f * Mathf.Log(Random.value)) * Mathf.Sin(2f * Mathf.PI * Random.value);
+		float randNormal = mean + stdDev * randStdNormal;
+
+		// If positive-only, clamp to positives.
+		if (positiveOnly) {
+			randNormal = Mathf.Abs (randNormal);
+		}
+
+		// Return the random normal number.
+		return randNormal;
+	}
 }

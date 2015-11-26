@@ -36,7 +36,7 @@ public class CameraZoom : MonoBehaviour {
 		#if (UNITY_EDITOR || UNITY_STANDALONE)
 
 		// ... change the orthographic size based on the change in distance between the touches.
-		Camera.orthographicSize += Input.mouseScrollDelta.y * orthoZoomRate * Time.deltaTime;
+		Camera.orthographicSize -= Input.mouseScrollDelta.y * orthoZoomRate * Time.deltaTime;
 
 		// Clamp orthographic size.
 		Camera.orthographicSize = Mathf.Clamp(Camera.orthographicSize, minOrthoSize, maxOrthoSize);

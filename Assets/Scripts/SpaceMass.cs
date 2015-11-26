@@ -59,7 +59,7 @@ public class SpaceMass : MonoBehaviour {
 	void Start () {
 
 		// Apply the logical size to the physical body.
-		gameObject.GetComponentInChildren<SphereCollider> ().transform.localScale = Vector3.one * size;
+		gameObject.GetComponentInChildren<Collider2D> ().transform.localScale = Vector3.one * size;
 
 		// If this body orbits a primary, initialize the orbit.
 		if (orbitalPrimary != null) {
@@ -76,6 +76,16 @@ public class SpaceMass : MonoBehaviour {
 	/// Update this component.
 	/// </summary>
 	void Update () {
+
+		if (Input.GetMouseButtonDown (0))
+		{
+			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			Vector2 touchPos = new Vector2(wp.x, wp.y);
+			Collider2D col = Physics2D.OverlapPoint (touchPos);
+			if (col == GetComponentInChildren<Collider2D> ()) {
+				UserInterface.SelectSpaceMass (this);
+			}
+		}
 
 		// If this body orbits a primary, update the orbit.
 		if (orbitalPrimary != null) {
