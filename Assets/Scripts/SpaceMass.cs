@@ -4,6 +4,7 @@
 /// A GameObject with a SpaceMass attached is just an object floating in space. It has a size, which determines
 /// how big it is physically, and can optionally orbit another SpaceMass.
 /// </summary>
+[ExecuteInEditMode]
 public class SpaceMass : MonoBehaviour {
 
 	/// <summary>
@@ -12,6 +13,14 @@ public class SpaceMass : MonoBehaviour {
 	/// <value>The logical size of this SpaceMass.</value>
 	public float Size {
 		get { return size; }
+	}
+
+	/// <summary>
+	/// Gets the radius of this SpaceMass in game distance units.
+	/// </summary>
+	/// <value>The radius of this SpaceMass.</value>
+	public float Radius {
+		get { return size / 2; }
 	}
 
 	/// <summary>
@@ -59,9 +68,7 @@ public class SpaceMass : MonoBehaviour {
 			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
 
 			// Calculate the initial angle to the primary.
-			angleToPrimary = Mathf.Atan2 (
-				transform.position.y - orbitalPrimary.transform.position.y,
-				transform.position.x - orbitalPrimary.transform.position.x);
+			angleToPrimary = MathUtil.AngleBetweenPoints (transform.position, orbitalPrimary.transform.position);
 		}
 	}
 
@@ -77,9 +84,8 @@ public class SpaceMass : MonoBehaviour {
 			angleToPrimary += (orbitsClockwise ? -1 : 1) * orbitSpeed * Time.deltaTime;
 
 			// Recalculate and update the position of this object's transform.
-			float x = orbitalPrimary.transform.position.x + distanceToPrimary * Mathf.Cos (angleToPrimary);
-			float y = orbitalPrimary.transform.position.y + distanceToPrimary * Mathf.Sin (angleToPrimary);
-			transform.position = new Vector2 (x, y);
+			transform.position = MathUtil.RadialPosition (
+				distanceToPrimary, angleToPrimary,orbitalPrimary.transform.position);
 		}
 	}
 }
