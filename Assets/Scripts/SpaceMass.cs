@@ -7,6 +7,14 @@
 public class SpaceMass : MonoBehaviour {
 
 	/// <summary>
+	/// Gets the logical size of this SpaceMass.
+	/// </summary>
+	/// <value>The logical size of this SpaceMass.</value>
+	public float Size {
+		get { return size; }
+	}
+
+	/// <summary>
 	/// The size of the space mass. Determines the scale of the sphere object on initialize.
 	/// </summary>
 	[SerializeField] private float size = 1f;
@@ -40,6 +48,9 @@ public class SpaceMass : MonoBehaviour {
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
+
+		// Apply the logical size to the physical body.
+		gameObject.GetComponentInChildren<SphereCollider> ().transform.localScale = Vector3.one * size;
 
 		// If this body orbits a primary, initialize the orbit.
 		if (orbitalPrimary != null) {
