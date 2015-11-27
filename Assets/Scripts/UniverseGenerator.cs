@@ -103,6 +103,22 @@ public class UniverseGenerator : MonoBehaviour {
 		// Attach to the universe.
 		newSpaceMass.transform.SetParent (transform);
 
+		// Color the planet according to its generation.
+		Color color = Color.grey;
+		if (generation == 0) {
+			color = Color.white;
+		}
+		else if (generation == 1) {
+			color = Color.yellow;
+		}
+		else if (generation == 2) {
+			color = Color.green;
+		}
+		else if (generation == 1) {
+			color = Color.grey;
+		}
+		newSpaceMass.GetComponentInChildren<Renderer> ().material.SetColor ("_Color", color);
+
 		// Determine the number of satellites along a normal curve.
 		int numSatellites = (int)MathUtil.RandomFromNormalDistribution (6 / (generation + 1), 1, true);
 
