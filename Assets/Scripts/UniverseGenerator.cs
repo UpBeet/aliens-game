@@ -114,7 +114,7 @@ public class UniverseGenerator : MonoBehaviour {
 		else if (generation == 2) {
 			color = Color.green;
 		}
-		else if (generation == 1) {
+		else if (generation == 3) {
 			color = Color.grey;
 		}
 		newSpaceMass.GetComponentInChildren<Renderer> ().material.SetColor ("_Color", color);
