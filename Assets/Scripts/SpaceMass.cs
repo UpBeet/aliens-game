@@ -44,6 +44,11 @@ public class SpaceMass : MonoBehaviour {
 	[SerializeField] private bool orbitsClockwise = true;
 
 	/// <summary>
+	/// The amount of food on this space mass.
+	/// </summary>
+	[SerializeField] private int food = 5;
+
+	/// <summary>
 	/// The calculated distance between this body and its primary.
 	/// </summary>
 	private float distanceToPrimary;
@@ -109,12 +114,14 @@ public class SpaceMass : MonoBehaviour {
 	/// <param name="orbitRadius">Orbit radius.</param>
 	/// <param name="startAngle">Start angle.</param>
 	public void Initialize (float size, SpaceMass orbitalPrimary, float orbitSpeed,
-		bool orbitsClockwise, float orbitRadius, float startAngle) {
+		bool orbitsClockwise, float orbitRadius, float startAngle,
+		int food = 5) {
 
 		this.size = size;
 		this.orbitalPrimary = orbitalPrimary;
 		this.orbitSpeed = orbitSpeed;
 		this.orbitsClockwise = orbitsClockwise;
+		this.food = food;
 
 		transform.position = MathUtil.RadialPosition (orbitRadius, startAngle,
 			orbitalPrimary == null ? Vector3.zero : orbitalPrimary.transform.position);

@@ -66,7 +66,7 @@ public class UniverseGenerator : MonoBehaviour {
 		if (home != null) {
 
 			// Create a home species.
-			Species homeSpecies = new Species ("My Species");
+			Species homeSpecies = new Species ("My Species", home);
 
 			// Spawn a few members.
 			for (int i = 0; i < 6; i++) {

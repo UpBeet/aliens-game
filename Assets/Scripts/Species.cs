@@ -11,6 +11,11 @@ public class Species {
 	private string name;
 
 	/// <summary>
+	/// The home of this species.
+	/// </summary>
+	private SpaceMass home;
+
+	/// <summary>
 	/// SpaceEntities that are of this species.
 	/// </summary>
 	private List<SpaceEntity> members = new List<SpaceEntity> ();
@@ -19,8 +24,9 @@ public class Species {
 	/// Initializes a new instance of the <see cref="Species"/> class.
 	/// </summary>
 	/// <param name="name">Name of the species.</param>
-	public Species (string name) {
+	public Species (string name, SpaceMass home) {
 		this.name = name;
+		this.home = home;
 	}
 
 	/// <summary>
