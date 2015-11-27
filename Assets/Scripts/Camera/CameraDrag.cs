@@ -10,7 +10,7 @@ public class CameraDrag : MonoBehaviour {
 	/// <summary>
 	/// The drag speed coefficient.
 	/// </summary>
-	public float dragSpeed = 1f;
+	public float dragSpeed = 0.005f;
 
 	/// <summary>
 	/// The drag position last frame.
@@ -45,7 +45,7 @@ public class CameraDrag : MonoBehaviour {
 	/// <summary>
 	/// The speed at which focusing occurs.
 	/// </summary>
-	[SerializeField] private float focusRate = 0.999f;
+	[SerializeField] private float focusRate = 0.1f;
 
 	/// <summary>
 	/// Reference to the camera component.
