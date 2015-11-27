@@ -16,6 +16,11 @@ public class SpaceEntity : MonoBehaviour {
 	[SerializeField] private SpaceMass home = null;
 
 	/// <summary>
+	/// The species this SpaceEntity is a member of.
+	/// </summary>
+	private Species species;
+
+	/// <summary>
 	/// The angle to the center of the entity's current home. If home is null, this value is meaningless.
 	/// </summary>
 	private float angleToHome;
@@ -45,6 +50,15 @@ public class SpaceEntity : MonoBehaviour {
 		if (home != null) {
 			MoveAlongSurface (wanderingVelocity * Time.deltaTime);
 		}
+	}
+
+	/// <summary>
+	/// Initialize this SpaceEntity given a species.
+	/// </summary>
+	/// <param name="species">Species this SpaceEntity will be a member of.</param>
+	public void Initialize (Species species) {
+		this.species = species;
+		species.AddMember (this);
 	}
 
 	/// <summary>

@@ -58,5 +58,6 @@ public class UserInterface : MonoBehaviour {
 
 		// Focus the camera on the selected planet.
 		Camera.main.GetComponent<CameraDrag> ().Follow (selected.transform);
+		Camera.main.GetComponent<CameraZoom> ().Focus (selected.Size);
 	}
 }

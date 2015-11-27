@@ -12,6 +12,11 @@ public class UniverseGenerator : MonoBehaviour {
 	[SerializeField] private SpaceMass spaceMassPrefab;
 
 	/// <summary>
+	/// Reference to the basic SpaceEntity prefab.
+	/// </summary>
+	[SerializeField] private SpaceEntity spaceEntityPrefab;
+
+	/// <summary>
 	/// The size of the first mass generated.
 	/// </summary>
 	[SerializeField] private float startingMassSize = 20f;
@@ -32,6 +37,11 @@ public class UniverseGenerator : MonoBehaviour {
 	[SerializeField] private float maxSizeOfPrimary = 0.5f;
 
 	/// <summary>
+	/// The player's home in this universe.
+	/// </summary>
+	private SpaceMass home = null;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
@@ -46,8 +56,26 @@ public class UniverseGenerator : MonoBehaviour {
 		// Clear the old universe.
 		gameObject.DestroyAllChildren ();
 
+		// Reset the player's home.
+		home = null;
+
 		// Start by instantiating the center of the universe.
 		GenerateSpaceMass ();
+
+		// Configure the home planet.
+		if (home != null) {
+
+			// Create a home species.
+			Species homeSpecies = new Species ("My Species", home);
+
+			// Spawn a few members.
+			for (int i = 0; i < 6; i++) {
+				SpawnSpaceEntity (homeSpecies, home);
+			}
+
+			// Select the home planet.
+			UserInterface.SelectSpaceMass (home);
+		}
 	}
 
 	/// <summary>
@@ -113,8 +141,13 @@ public class UniverseGenerator : MonoBehaviour {
 		}
 		else if (generation == 2) {
 			color = Color.green;
+
+			// Pick the first generation 2 planet as home for testing.
+			if (home == null) {
+				home = newSpaceMass;
+			}
 		}
-		else if (generation == 1) {
+		else if (generation == 3) {
 			color = Color.grey;
 		}
 		newSpaceMass.GetComponentInChildren<Renderer> ().material.SetColor ("_Color", color);
@@ -126,5 +159,17 @@ public class UniverseGenerator : MonoBehaviour {
 		for (int i = 0; i < numSatellites; i++) {
 			GenerateSpaceMass (generation + 1, newSpaceMass, i);
 		}
+	}
+
+	/// <summary>
+	/// Spawns the space entity.
+	/// </summary>
+	/// <param name="home">Home.</param>
+	public void SpawnSpaceEntity (Species species, SpaceMass home) {
+
+		// Instantiate, initialize, and place the entity.
+		SpaceEntity newSpaceEntity = Instantiate (spaceEntityPrefab);
+		newSpaceEntity.Initialize (species);
+		newSpaceEntity.AttachToSpaceMass (home);
 	}
 }

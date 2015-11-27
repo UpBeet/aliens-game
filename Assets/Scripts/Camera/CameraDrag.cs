@@ -10,7 +10,7 @@ public class CameraDrag : MonoBehaviour {
 	/// <summary>
 	/// The drag speed coefficient.
 	/// </summary>
-	public float dragSpeed = 1f;
+	public float dragSpeed = 0.005f;
 
 	/// <summary>
 	/// The drag position last frame.
@@ -45,7 +45,7 @@ public class CameraDrag : MonoBehaviour {
 	/// <summary>
 	/// The speed at which focusing occurs.
 	/// </summary>
-	[SerializeField] private float focusRate = 0.999f;
+	[SerializeField] private float focusRate = 0.1f;
 
 	/// <summary>
 	/// Reference to the camera component.
@@ -111,13 +111,13 @@ public class CameraDrag : MonoBehaviour {
 			}
 
 			// Make sure the camera is backed up while game takes control of camera.
-			transform.position = new Vector3 (transform.position.x, transform.position.y, -10);
+			transform.position = new Vector3 (transform.position.x, transform.position.y, -100);
 		}
 		else {
 
 			// Update using control velocity.
 			transform.localPosition = new Vector3 (transform.localPosition.x - velocity.x,
-				transform.localPosition.y - velocity.y, -10);
+				transform.localPosition.y - velocity.y, -100);
 		}
 	}
 
