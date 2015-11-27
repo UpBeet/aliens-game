@@ -32,6 +32,11 @@ public class UniverseGenerator : MonoBehaviour {
 	[SerializeField] private float maxSizeOfPrimary = 0.5f;
 
 	/// <summary>
+	/// The player's home in this universe.
+	/// </summary>
+	private SpaceMass home = null;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
@@ -46,8 +51,16 @@ public class UniverseGenerator : MonoBehaviour {
 		// Clear the old universe.
 		gameObject.DestroyAllChildren ();
 
+		// Reset the player's home.
+		home = null;
+
 		// Start by instantiating the center of the universe.
 		GenerateSpaceMass ();
+
+		// Select the home planet.
+		if (home != null) {
+			UserInterface.SelectSpaceMass (home);
+		}
 	}
 
 	/// <summary>
@@ -113,6 +126,11 @@ public class UniverseGenerator : MonoBehaviour {
 		}
 		else if (generation == 2) {
 			color = Color.green;
+
+			// Pick the first generation 2 planet as home for testing.
+			if (home == null) {
+				home = newSpaceMass;
+			}
 		}
 		else if (generation == 3) {
 			color = Color.grey;
