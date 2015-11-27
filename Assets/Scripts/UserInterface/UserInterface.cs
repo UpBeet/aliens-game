@@ -12,6 +12,11 @@ public class UserInterface : MonoBehaviour {
 	private static UserInterface singleton;
 
 	/// <summary>
+	/// The currently selected SpaceMass.
+	/// </summary>
+	private static SpaceMass selected;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
@@ -21,8 +26,16 @@ public class UserInterface : MonoBehaviour {
 	/// <summary>
 	/// Selects the specified space mass.
 	/// </summary>
-	/// <param name="selected">Selected space mass.</param>
-	public static void SelectSpaceMass (SpaceMass selected) {
+	/// <param name="spaceMass">Selected space mass.</param>
+	public static void SelectSpaceMass (SpaceMass spaceMass) {
+
+		// If there was a previously selected SpaceMass, deselect it.
+		if (selected != null) {
+			selected.GetComponentInChildren<HighlightingSystem.Highlighter> ().Off ();
+		}
+
+		// Record the newly selected mass.
+		selected = spaceMass;
 
 		// Get the selected planet panel.
 		HideableInterfaceElement selectedPlanetPanel = singleton.transform.Find ("Selected Planet").GetComponent<HideableInterfaceElement> ();
@@ -39,5 +52,11 @@ public class UserInterface : MonoBehaviour {
 
 		// Show the panel.
 		selectedPlanetPanel.Show ();
+
+		// Highlight the selected mass.
+		selected.GetComponentInChildren<HighlightingSystem.Highlighter> ().ConstantOn ();
+
+		// Focus the camera on the selected planet.
+		Camera.main.GetComponent<CameraDrag> ().Follow (selected.transform);
 	}
 }
