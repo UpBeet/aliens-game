@@ -12,6 +12,11 @@ public class UniverseGenerator : MonoBehaviour {
 	[SerializeField] private SpaceMass spaceMassPrefab;
 
 	/// <summary>
+	/// Reference to the basic SpaceEntity prefab.
+	/// </summary>
+	[SerializeField] private SpaceEntity spaceEntityPrefab;
+
+	/// <summary>
 	/// The size of the first mass generated.
 	/// </summary>
 	[SerializeField] private float startingMassSize = 20f;
@@ -57,8 +62,18 @@ public class UniverseGenerator : MonoBehaviour {
 		// Start by instantiating the center of the universe.
 		GenerateSpaceMass ();
 
-		// Select the home planet.
+		// Configure the home planet.
 		if (home != null) {
+
+			// Create a home species.
+			Species homeSpecies = new Species ("My Species");
+
+			// Spawn a few members.
+			for (int i = 0; i < 6; i++) {
+				SpawnSpaceEntity (homeSpecies, home);
+			}
+
+			// Select the home planet.
 			UserInterface.SelectSpaceMass (home);
 		}
 	}
@@ -144,5 +159,17 @@ public class UniverseGenerator : MonoBehaviour {
 		for (int i = 0; i < numSatellites; i++) {
 			GenerateSpaceMass (generation + 1, newSpaceMass, i);
 		}
+	}
+
+	/// <summary>
+	/// Spawns the space entity.
+	/// </summary>
+	/// <param name="home">Home.</param>
+	public void SpawnSpaceEntity (Species species, SpaceMass home) {
+
+		// Instantiate, initialize, and place the entity.
+		SpaceEntity newSpaceEntity = Instantiate (spaceEntityPrefab);
+		newSpaceEntity.Initialize (species);
+		newSpaceEntity.AttachToSpaceMass (home);
 	}
 }
