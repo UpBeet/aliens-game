@@ -111,13 +111,13 @@ public class CameraDrag : MonoBehaviour {
 			}
 
 			// Make sure the camera is backed up while game takes control of camera.
-			transform.position = new Vector3 (transform.position.x, transform.position.y, -10);
+			transform.position = new Vector3 (transform.position.x, transform.position.y, -100);
 		}
 		else {
 
 			// Update using control velocity.
 			transform.localPosition = new Vector3 (transform.localPosition.x - velocity.x,
-				transform.localPosition.y - velocity.y, -10);
+				transform.localPosition.y - velocity.y, -100);
 		}
 	}
 
