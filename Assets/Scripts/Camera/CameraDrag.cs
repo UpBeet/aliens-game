@@ -48,9 +48,15 @@ public class CameraDrag : MonoBehaviour {
 	[SerializeField] private float focusRate = 0.999f;
 
 	/// <summary>
+	/// Reference to the camera component.
+	/// </summary>
+	private Camera cam;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
+		cam = GetComponent<Camera> ();
 		focusPosition = transform.position;
 	}
 
@@ -68,7 +74,7 @@ public class CameraDrag : MonoBehaviour {
 		if (Input.GetMouseButton (0)) {
 			Vector2 currentMousePosition = Input.mousePosition;
 			Vector2 deltaMousePosition = currentMousePosition - prevDragPosition;
-			velocity = deltaMousePosition * dragSpeed;
+			velocity = deltaMousePosition * dragSpeed * cam.orthographicSize;
 			prevDragPosition = currentMousePosition;
 		}
 		else {
