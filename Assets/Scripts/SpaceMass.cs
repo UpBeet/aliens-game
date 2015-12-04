@@ -61,26 +61,16 @@ public class SpaceMass : MonoBehaviour {
 	/// <summary>
 	/// Initialize this component.
 	/// </summary>
-	void Start () {
+	private void Start () {
 
-		// Apply the logical size to the physical body.
-		gameObject.GetComponentInChildren<Collider2D> ().transform.localScale = Vector3.one * size;
-
-		// If this body orbits a primary, initialize the orbit.
-		if (orbitalPrimary != null) {
-
-			// Calculate the distance to the primary.
-			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
-
-			// Calculate the initial angle to the primary.
-			angleToPrimary = MathUtil.AngleBetweenPoints (transform.position, orbitalPrimary.transform.position);
-		}
+		// Initialize the SpaceMass with initial values.
+		Initialize (size, orbitalPrimary, orbitSpeed, orbitsClockwise, distanceToPrimary, angleToPrimary, food);
 	}
 
 	/// <summary>
 	/// Update this component.
 	/// </summary>
-	void Update () {
+	private void Update () {
 
 		// If this body orbits a primary, update the orbit.
 		if (orbitalPrimary != null) {
@@ -107,20 +97,35 @@ public class SpaceMass : MonoBehaviour {
 		bool orbitsClockwise, float orbitRadius, float startAngle,
 		int food = 5) {
 
+		// Copy logical data.
 		this.size = size;
 		this.orbitalPrimary = orbitalPrimary;
 		this.orbitSpeed = orbitSpeed;
 		this.orbitsClockwise = orbitsClockwise;
 		this.food = food;
 
+		// Position in orbit.
 		transform.position = MathUtil.RadialPosition (orbitRadius, startAngle,
 			orbitalPrimary == null ? Vector3.zero : orbitalPrimary.transform.position);
+
+		// Apply the logical size to the physical body.
+		gameObject.GetComponentInChildren<Collider2D> ().transform.localScale = Vector3.one * size;
+
+		// If this body orbits a primary, initialize the orbit.
+		if (orbitalPrimary != null) {
+
+			// Calculate the distance to the primary.
+			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
+
+			// Calculate the initial angle to the primary.
+			angleToPrimary = MathUtil.AngleBetweenPoints (transform.position, orbitalPrimary.transform.position);
+		}
 	}
 
 	/// <summary>
 	/// Select this SpaceMass.
 	/// </summary>
 	public void Select () {
-		UserInterface.SelectSpaceMass (this);
+		UserInterface.Select (GetComponent<Selectable> ());
 	}
 }

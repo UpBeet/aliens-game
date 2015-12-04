@@ -92,6 +92,13 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Select this SpaceEntity.
+	/// </summary>
+	public void Select () {
+		UserInterface.Select (GetComponent<Selectable> ());
+	}
+
+	/// <summary>
 	/// Moves this entity a given distance along their home's surface.
 	/// </summary>
 	/// <param name="distance">Distance moved clockwise.</param>

@@ -98,7 +98,7 @@ GameObject:
   - 225: {fileID: 70392060}
   - 114: {fileID: 70392059}
   m_Layer: 0
-  m_Name: Selected Planet
+  m_Name: Selected Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,7 +278,7 @@ GameObject:
   - 222: {fileID: 1635121777}
   - 114: {fileID: 1635121776}
   m_Layer: 0
-  m_Name: Planet Name
+  m_Name: Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Selected Planet
+  m_Text: Selected
 --- !u!222 &1635121777
 CanvasRenderer:
   m_ObjectHideFlags: 0
