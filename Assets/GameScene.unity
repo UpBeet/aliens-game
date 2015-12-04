@@ -505,10 +505,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceMassPrefab: {fileID: 11439374, guid: fdd4dad0c086549d899d7559afaabed7, type: 2}
   spaceEntityPrefab: {fileID: 11453048, guid: ec8f3b3da7e30454fbd5a5711895f38a, type: 2}
-  startingMassSize: 40
+  starMassSizeRange: {x: 10, y: 20}
+  satelliteDiminishRange: {x: .100000001, y: .5}
+  starSpacing: 200
   minPlanetSize: 1
-  minSizeOfPrimary: .100000001
-  maxSizeOfPrimary: .5
 --- !u!4 &1657391763
 Transform:
   m_ObjectHideFlags: 0

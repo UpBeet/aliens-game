@@ -27,6 +27,11 @@ public class UniverseGenerator : MonoBehaviour {
 	[SerializeField] private Vector2 satelliteDiminishRange = new Vector2 (0.1f, 0.5f);
 
 	/// <summary>
+	/// The distance between the centers of solar systems.
+	/// </summary>
+	[SerializeField] private float starSpacing = 100f;
+
+	/// <summary>
 	/// The size at which planets stop generating children.
 	/// </summary>
 	[SerializeField] private float minPlanetSize = 1f;
@@ -40,13 +45,13 @@ public class UniverseGenerator : MonoBehaviour {
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
-		GenerateUniverse ();
+		GenerateUniverse (2);
 	}
 
 	/// <summary>
 	/// Procedurally generates a new universe, clearing the old one if there is one.
 	/// </summary>
-	public void GenerateUniverse () {
+	public void GenerateUniverse (int length = 1) {
 
 		// Clear the old universe.
 		gameObject.DestroyAllChildren ();
@@ -54,8 +59,14 @@ public class UniverseGenerator : MonoBehaviour {
 		// Reset the player's home.
 		home = null;
 
-		// Generate the origin space mass.
-		GenerateSpaceMass ();
+		// Generate the systems throughout the universe.
+		for (int x = 0; x < length; x++) {
+			for (int y = 0; y < length; y++) {
+
+				// Start recursively creating masses.
+				GenerateSpaceMass (0, null, 0, x * starSpacing, y * starSpacing);
+			}
+		}
 
 		// Configure the home planet.
 		if (home != null) {
@@ -92,7 +103,8 @@ public class UniverseGenerator : MonoBehaviour {
 		// Base case: start planet.
 		if (primary == null) {
 			newSpaceMass.Initialize (Random.Range (starMassSizeRange.x, starMassSizeRange.y), null, 0,
-				false, originX, originY);
+				false, 0, 0);
+			newSpaceMass.transform.position = new Vector2 (originX, originY);
 		}
 
 		// Initialize a random satellite planet.
@@ -135,7 +147,6 @@ public class UniverseGenerator : MonoBehaviour {
 		}
 		else if (generation == 1) {
 			color = Color.green;
-			color = Color.green;
 
 			// Pick the first generation 1 planet as home for testing.
 			if (home == null) {
@@ -145,7 +156,7 @@ public class UniverseGenerator : MonoBehaviour {
 		newSpaceMass.GetComponentInChildren<Renderer> ().material.SetColor ("_Color", color);
 
 		// Determine the number of satellites along a normal curve.
-		int numSatellites = (int)MathUtil.RandomFromNormalDistribution (6 / (generation + 1), 1, true);
+		int numSatellites = (int)MathUtil.RandomFromNormalDistribution (6 / ((generation + 1) * 2), 1, true);
 
 		// Generate satellite.
 		for (int i = 0; i < numSatellites; i++) {
