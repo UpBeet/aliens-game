@@ -104,15 +104,14 @@ public class SpaceMass : MonoBehaviour {
 		this.orbitsClockwise = orbitsClockwise;
 		this.food = food;
 
-		// Position in orbit.
-		transform.position = MathUtil.RadialPosition (orbitRadius, startAngle,
-			orbitalPrimary == null ? Vector3.zero : orbitalPrimary.transform.position);
-
 		// Apply the logical size to the physical body.
 		gameObject.GetComponentInChildren<Collider2D> ().transform.localScale = Vector3.one * size;
 
 		// If this body orbits a primary, initialize the orbit.
 		if (orbitalPrimary != null) {
+
+			// Position in orbit.
+			transform.position = MathUtil.RadialPosition (orbitRadius, startAngle, orbitalPrimary.transform.position);
 
 			// Calculate the distance to the primary.
 			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
