@@ -4,7 +4,7 @@
 /// If you attach a UniverseGenerator component to a GameObject, it will procedurally generate a universe. You
 /// probably only need one of those in the scene at a time.
 /// </summary>
-public class UniverseGenerator : MonoBehaviour {
+public class Universe : MonoBehaviour {
 
 	/// <summary>
 	/// Reference to the basic SpaceMass prefab.

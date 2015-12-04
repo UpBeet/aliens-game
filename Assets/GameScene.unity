@@ -509,6 +509,7 @@ MonoBehaviour:
   satelliteDiminishRange: {x: .100000001, y: .5}
   starSpacing: 200
   minPlanetSize: 1
+  home: {fileID: 0}
 --- !u!4 &1657391763
 Transform:
   m_ObjectHideFlags: 0
