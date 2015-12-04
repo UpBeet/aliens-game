@@ -54,7 +54,7 @@ public class UniverseGenerator : MonoBehaviour {
 		// Reset the player's home.
 		home = null;
 
-		// Start by instantiating the center of the universe.
+		// Generate the origin space mass.
 		GenerateSpaceMass ();
 
 		// Configure the home planet.
@@ -78,7 +78,8 @@ public class UniverseGenerator : MonoBehaviour {
 	/// </summary>
 	/// <param name="generation">Generation.</param>
 	/// <param name="primary">Primary.</param>
-	private void GenerateSpaceMass (int generation = 0, SpaceMass primary = null, int satelliteIndex = 0) {
+	private void GenerateSpaceMass (int generation = 0, SpaceMass primary = null,
+		int satelliteIndex = 0, float originX = 0, float originY = 0) {
 
 		// Base case: primary is too small to have satellites.
 		if (primary != null && primary.Size < minPlanetSize) {
@@ -90,7 +91,8 @@ public class UniverseGenerator : MonoBehaviour {
 
 		// Base case: start planet.
 		if (primary == null) {
-			newSpaceMass.Initialize (Random.Range (starMassSizeRange.x, starMassSizeRange.y), null, 0, false, 0, 0);
+			newSpaceMass.Initialize (Random.Range (starMassSizeRange.x, starMassSizeRange.y), null, 0,
+				false, originX, originY);
 		}
 
 		// Initialize a random satellite planet.
