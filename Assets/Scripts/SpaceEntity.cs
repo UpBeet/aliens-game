@@ -95,7 +95,7 @@ public class SpaceEntity : MonoBehaviour {
 	/// Moves this entity a given distance along their home's surface.
 	/// </summary>
 	/// <param name="distance">Distance moved clockwise.</param>
-	public void MoveAlongSurface (float distance) {
+	private void MoveAlongSurface (float distance) {
 
 		// Base case: home is null.
 		if (home == null) {
