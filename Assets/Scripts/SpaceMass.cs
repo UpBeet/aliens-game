@@ -82,16 +82,6 @@ public class SpaceMass : MonoBehaviour {
 	/// </summary>
 	void Update () {
 
-		if (Input.GetMouseButtonUp (0))
-		{
-			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector2 touchPos = new Vector2(wp.x, wp.y);
-			Collider2D col = Physics2D.OverlapPoint (touchPos);
-			if (col == GetComponentInChildren<Collider2D> ()) {
-				UserInterface.SelectSpaceMass (this);
-			}
-		}
-
 		// If this body orbits a primary, update the orbit.
 		if (orbitalPrimary != null) {
 
@@ -125,5 +115,12 @@ public class SpaceMass : MonoBehaviour {
 
 		transform.position = MathUtil.RadialPosition (orbitRadius, startAngle,
 			orbitalPrimary == null ? Vector3.zero : orbitalPrimary.transform.position);
+	}
+
+	/// <summary>
+	/// Select this SpaceMass.
+	/// </summary>
+	public void Select () {
+		UserInterface.SelectSpaceMass (this);
 	}
 }

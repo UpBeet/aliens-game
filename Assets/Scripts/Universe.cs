@@ -80,7 +80,7 @@ public class Universe : MonoBehaviour {
 			}
 
 			// Select the home planet.
-			UserInterface.SelectSpaceMass (home);
+			home.Select ();
 		}
 	}
 
