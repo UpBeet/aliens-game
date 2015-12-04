@@ -129,21 +129,16 @@ public class UniverseGenerator : MonoBehaviour {
 		// Color the planet according to its generation.
 		Color color = Color.grey;
 		if (generation == 0) {
-			color = Color.white;
-		}
-		else if (generation == 1) {
 			color = Color.yellow;
 		}
-		else if (generation == 2) {
+		else if (generation == 1) {
+			color = Color.green;
 			color = Color.green;
 
-			// Pick the first generation 2 planet as home for testing.
+			// Pick the first generation 1 planet as home for testing.
 			if (home == null) {
 				home = newSpaceMass;
 			}
-		}
-		else if (generation == 3) {
-			color = Color.grey;
 		}
 		newSpaceMass.GetComponentInChildren<Renderer> ().material.SetColor ("_Color", color);
 
