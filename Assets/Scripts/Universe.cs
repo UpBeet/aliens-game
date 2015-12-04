@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// If you attach a UniverseGenerator component to a GameObject, it will procedurally generate a universe. You
-/// probably only need one of those in the scene at a time.
+/// Manages a Universe in the game Scene. Includes functionality for generating and maintaing a Universe of
+/// SpaceMasses and SpaceEntities and other game logic.
 /// </summary>
 public class Universe : MonoBehaviour {
 
