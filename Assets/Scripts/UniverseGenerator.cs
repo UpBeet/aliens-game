@@ -19,22 +19,17 @@ public class UniverseGenerator : MonoBehaviour {
 	/// <summary>
 	/// The size of the first mass generated.
 	/// </summary>
-	[SerializeField] private float startingMassSize = 20f;
+	[SerializeField] private Vector2 starMassSizeRange = new Vector2 (10f, 20f);
+
+	/// <summary>
+	/// The minimum relative proportionate scale of a primary's generated satellite.
+	/// </summary>
+	[SerializeField] private Vector2 satelliteDiminishRange = new Vector2 (0.1f, 0.5f);
 
 	/// <summary>
 	/// The size at which planets stop generating children.
 	/// </summary>
 	[SerializeField] private float minPlanetSize = 1f;
-
-	/// <summary>
-	/// The minimum relative proportionate scale of a primary's generated satellite.
-	/// </summary>
-	[SerializeField] private float minSizeOfPrimary = 0.1f;
-
-	/// <summary>
-	/// The maximum relative proportionate scale of a primary's generated satellite.
-	/// </summary>
-	[SerializeField] private float maxSizeOfPrimary = 0.5f;
 
 	/// <summary>
 	/// The player's home in this universe.
@@ -95,14 +90,14 @@ public class UniverseGenerator : MonoBehaviour {
 
 		// Base case: start planet.
 		if (primary == null) {
-			newSpaceMass.Initialize (startingMassSize, null, 0, false, 0, 0);
+			newSpaceMass.Initialize (Random.Range (starMassSizeRange.x, starMassSizeRange.y), null, 0, false, 0, 0);
 		}
 
 		// Initialize a random satellite planet.
 		else {
 
 			// The size is a randomly selection proportion of the primary.
-			float size = primary.Size * Random.Range (minSizeOfPrimary, maxSizeOfPrimary);
+			float size = primary.Size * Random.Range (satelliteDiminishRange.x, satelliteDiminishRange.y);
 
 			// Orbital speed is based on the size of the mass.
 			float orbitalSpeed = Random.Range (0f, 1f) / size;
