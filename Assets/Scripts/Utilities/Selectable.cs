@@ -4,7 +4,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Collider selector.
 /// </summary>
-public class ColliderSelector : MonoBehaviour {
+public class Selectable : MonoBehaviour {
 
 	/// <summary>
 	/// Fires when this GameObject is selected.
