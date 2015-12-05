@@ -71,4 +71,27 @@ public class UserInterface : MonoBehaviour {
 		Camera.main.GetComponent<CameraDrag> ().Follow (selected.transform);
 		Camera.main.GetComponent<CameraZoom> ().Focus (selected.GetComponentInChildren<Renderer> ().bounds.size.magnitude);
 	}
+
+	/// <summary>
+	/// Called when the Launch button is pressed.
+	/// </summary>
+	public void OnLaunchButtonPressed () {
+
+		// If nothing is selected, this won't work. Exit out and print an error.
+		if (selected == null) {
+			Debug.LogError ("Nothing selected to launch.");
+			return;
+		}
+
+		// Check if the selection is a SpaceEntity.
+		SpaceEntity entity = selected.GetComponent<SpaceEntity> ();
+		if (entity != null) {
+			Debug.LogWarning ("Prepare " + entity.name + " for launch.");
+		}
+
+		// Otherwise, we can't launch this thing.
+		else {
+			Debug.LogWarning ("Can't launch this " + selected.name + " thing.");
+		}
+	}
 }
