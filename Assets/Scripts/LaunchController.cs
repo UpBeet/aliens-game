@@ -73,7 +73,7 @@ public class LaunchController : MonoBehaviour {
 
 				// Clamp to max distance from home.
 				if (Vector2.Distance (entityPos, homePos) > maxDistance) {
-					entityPos = MathUtil.RadialPosition (
+					entityPos = MathUtil.Vector2FromMagnitudeAndAngle (
 						maxDistance, MathUtil.AngleBetweenPoints (entityPos, homePos), homePos);
 				}
 
@@ -106,6 +106,10 @@ public class LaunchController : MonoBehaviour {
 			return;
 		}
 
+		// Calculate the launch angle.
 		float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
+
+		// Release the entity and apply a force.
+		// entity.GetComponent<Rigidbody2D> ().AddForce (
 	}
 }

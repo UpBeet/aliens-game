@@ -21,8 +21,8 @@ public static class MathUtil {
 	/// <returns>The local position vector from the origin.</returns>
 	/// <param name="distance">Distance from the origin.</param>
 	/// <param name="angle">Angle from the origin in radians.</param>
-	public static Vector2 LocalRadialPosition (float distance, float angle) {
-		return RadialPosition (distance, angle, Vector2.zero);
+	public static Vector2 Vector2FromMagnitudeAndAngle (float distance, float angle) {
+		return Vector2FromMagnitudeAndAngle (distance, angle, Vector2.zero);
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public static class MathUtil {
 	/// <param name="distance">Distance from the origin.</param>
 	/// <param name="angle">Angle from the origin in radians.</param>
 	/// <param name="origin">Origin point in 2D space.</param>
-	public static Vector2 RadialPosition (float distance, float angle, Vector2 origin) {
+	public static Vector2 Vector2FromMagnitudeAndAngle (float distance, float angle, Vector2 origin) {
 		float x = origin.x + distance * Mathf.Cos (angle);
 		float y = origin.y + distance * Mathf.Sin (angle);
 		return new Vector2 (x, y);

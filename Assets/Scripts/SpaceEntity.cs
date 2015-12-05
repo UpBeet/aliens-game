@@ -210,7 +210,7 @@ public class SpaceEntity : MonoBehaviour {
 		if (home != null) {
 
 			// Reposition the entity so that it lingers on the edge of the mass.
-			transform.localPosition = MathUtil.LocalRadialPosition (home.Radius, angleToHome);
+			transform.localPosition = MathUtil.Vector2FromMagnitudeAndAngle (home.Radius, angleToHome);
 
 			// Make this entity face inwards.
 			transform.localRotation = Quaternion.Euler (0, 0, Mathf.Rad2Deg * angleToHome - 90);

@@ -79,7 +79,7 @@ public class SpaceMass : MonoBehaviour {
 			angleToPrimary += (orbitsClockwise ? -1 : 1) * orbitSpeed * Time.deltaTime;
 
 			// Recalculate and update the position of this object's transform.
-			transform.position = MathUtil.RadialPosition (
+			transform.position = MathUtil.Vector2FromMagnitudeAndAngle (
 				distanceToPrimary, angleToPrimary,orbitalPrimary.transform.position);
 		}
 	}
@@ -112,7 +112,7 @@ public class SpaceMass : MonoBehaviour {
 		if (orbitalPrimary != null) {
 
 			// Position in orbit.
-			transform.position = MathUtil.RadialPosition (orbitRadius, startAngle, orbitalPrimary.transform.position);
+			transform.position = MathUtil.Vector2FromMagnitudeAndAngle (orbitRadius, startAngle, orbitalPrimary.transform.position);
 
 			// Calculate the distance to the primary.
 			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
