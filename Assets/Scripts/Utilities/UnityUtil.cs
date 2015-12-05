@@ -37,6 +37,20 @@ public static class UnityUtil {
 	}
 
 	/// <summary>
+	/// Properly gets the Collider2D under the relevant input.
+	/// </summary>
+	/// <returns>The Collider2D under input.</returns>
+	/// <param name="layer">The string name of the LayerMask to restrict.</param>
+	public static Collider2D GetCollider2DUnderInput (string layer) {
+
+		// Get the input position.
+		Vector2 input = GetInputPosition ();
+
+		// Get the collider under the input and return it.
+		return Physics2D.OverlapPoint (input, 1 << LayerMask.NameToLayer (layer));
+	}
+
+	/// <summary>
 	/// Gets the platform-relevant input position.
 	/// </summary>
 	/// <returns>The input position.</returns>

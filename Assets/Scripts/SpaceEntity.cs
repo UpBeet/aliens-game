@@ -20,6 +20,19 @@ public class SpaceEntity : MonoBehaviour {
 	};
 
 	/// <summary>
+	/// Gets the SpaceEntity's home.
+	/// </summary>
+	/// <value>The home.</value>
+	public SpaceMass Home {
+		get {
+			return home;
+		}
+		private set {
+			home = value;
+		}
+	}
+
+	/// <summary>
 	/// A space entity's home is the SpaceMass they are bound to.
 	/// </summary>
 	[SerializeField] private SpaceMass home = null;
@@ -122,6 +135,9 @@ public class SpaceEntity : MonoBehaviour {
 		transform.localPosition = new Vector2 (
 			collider.offset.x,
 			collider.offset.y);
+		Camera.main.GetComponent<CameraDrag> ().Follow (home.transform);
+		Camera.main.GetComponent<CameraZoom> ().Focus (home.Size);
+		gameObject.AddComponent<LaunchController> ();
 	}
 
 	/// <summary>

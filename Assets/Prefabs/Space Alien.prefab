@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 442796}
   - 95: {fileID: 9531120}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 426646}
   - 212: {fileID: 21245472}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - 114: {fileID: 11491710}
   - 58: {fileID: 5899916}
   - 114: {fileID: 11420042}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Space Alien
   m_TagString: Untagged
   m_Icon: {fileID: 0}
