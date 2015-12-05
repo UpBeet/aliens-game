@@ -142,10 +142,13 @@ public class SpaceEntity : MonoBehaviour {
 		case SpaceEntityState.Floating:
 		case SpaceEntityState.Launching:
 			anim.Play ("Idle Floating");
+			WorldSelectable.Enabled = false;
+			UserInterface.Select (null);
 			break;
 		case SpaceEntityState.Attached:
 			anim.Play ("Idle Attached");
 			spriteOffset = new Vector2 (0f, 0.5f);
+			WorldSelectable.Enabled = true;
 			break;
 		}
 

@@ -7,6 +7,11 @@ using UnityEngine.Events;
 public class WorldSelectable : MonoBehaviour {
 
 	/// <summary>
+	/// If set to false, selection is totally disabled.
+	/// </summary>
+	public static bool Enabled = true;
+
+	/// <summary>
 	/// Fires when this GameObject is selected.
 	/// </summary>
 	public UnityEvent OnSelect = new UnityEvent ();
@@ -16,13 +21,17 @@ public class WorldSelectable : MonoBehaviour {
 	/// </summary>
 	public static void Update () {
 
-		// Listen for left mouse button release.
-		if (Input.GetMouseButtonUp (0)) {
+		// Only update if we are enabled.
+		if (Enabled) {
 
-			// Use mouse position to determine 
-			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector2 touchPos = new Vector2(wp.x, wp.y);
-			SelectAtPos (touchPos);
+			// Listen for left mouse button release.
+			if (Input.GetMouseButtonUp (0)) {
+
+				// Use mouse position to determine 
+				Vector3 wp = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+				Vector2 touchPos = new Vector2 (wp.x, wp.y);
+				SelectAtPos (touchPos);
+			}
 		}
 	}
 
