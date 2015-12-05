@@ -126,6 +126,6 @@ public class SpaceMass : MonoBehaviour {
 	/// Select this SpaceMass.
 	/// </summary>
 	public void Select () {
-		UserInterface.Select (GetComponent<Selectable> ());
+		UserInterface.Select (GetComponent<WorldSelectable> ());
 	}
 }

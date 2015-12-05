@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 404694}
   - 114: {fileID: 11439374}
+  - 58: {fileID: 5883426}
   - 114: {fileID: 11477512}
   m_Layer: 0
   m_Name: Space Mass
@@ -27,7 +28,6 @@ GameObject:
   - 4: {fileID: 478282}
   - 33: {fileID: 3366252}
   - 23: {fileID: 2359342}
-  - 58: {fileID: 5868644}
   - 114: {fileID: 11477124}
   m_Layer: 0
   m_Name: Sphere
@@ -92,12 +92,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 140920}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!58 &5868644
+--- !u!58 &5883426
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 140920}
+  m_GameObject: {fileID: 107402}
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0

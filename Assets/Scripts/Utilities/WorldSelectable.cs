@@ -4,7 +4,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Collider selector.
 /// </summary>
-public class Selectable : MonoBehaviour {
+public class WorldSelectable : MonoBehaviour {
 
 	/// <summary>
 	/// Fires when this GameObject is selected.
@@ -24,7 +24,7 @@ public class Selectable : MonoBehaviour {
 			Vector2 touchPos = new Vector2(wp.x, wp.y);
 			Collider2D col = Physics2D.OverlapPoint (touchPos);
 			if (col != null) {
-				Selectable selected = col.GetComponentInChildren<Selectable> ();
+				WorldSelectable selected = col.GetComponentInChildren<WorldSelectable> ();
 				if (selected != null) {
 					selected.OnSelect.Invoke ();
 				}

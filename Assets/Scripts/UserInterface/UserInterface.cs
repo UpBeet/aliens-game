@@ -11,7 +11,7 @@ public class UserInterface : MonoBehaviour {
 	/// </summary>
 	private static UserInterface singleton;
 
-	private static Selectable selected;
+	private static WorldSelectable selected;
 
 	/// <summary>
 	/// Initialize this component.
@@ -24,14 +24,14 @@ public class UserInterface : MonoBehaviour {
 	/// Update this component.
 	/// </summary>
 	void Update () {
-		Selectable.Update ();
+		WorldSelectable.Update ();
 	}
 
 	/// <summary>
 	/// Selects the specified space mass.
 	/// </summary>
 	/// <param name="spaceMass">Selected space mass.</param>
-	public static void Select (Selectable incomingSelected) {
+	public static void Select (WorldSelectable incomingSelected) {
 
 		// If there was a previous selection, deselect it.
 		if (selected != null) {

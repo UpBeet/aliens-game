@@ -95,7 +95,7 @@ public class SpaceEntity : MonoBehaviour {
 	/// Select this SpaceEntity.
 	/// </summary>
 	public void Select () {
-		UserInterface.Select (GetComponent<Selectable> ());
+		UserInterface.Select (GetComponent<WorldSelectable> ());
 	}
 
 	/// <summary>
