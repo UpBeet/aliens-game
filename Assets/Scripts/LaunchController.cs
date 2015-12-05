@@ -12,6 +12,11 @@ public class LaunchController : MonoBehaviour {
 	private SpaceEntity entity;
 
 	/// <summary>
+	/// The maximum distance you can pull an entity while launching them.
+	/// </summary>
+	private float maxDistance = 10f;
+
+	/// <summary>
 	/// If set to true, the entity is in the player's hands.
 	/// </summary>
 	private bool grabbed = false;
@@ -57,10 +62,18 @@ public class LaunchController : MonoBehaviour {
 			// Check if we are grabbing the entity.
 			if (grabbed) {
 
-				// Place the entity at the current input position.
-				entity.transform.position = UnityUtil.GetInputPosition ();
+				// Create a scoped copy of the entity and planet positions.
+				Vector2 entityPos = UnityUtil.GetInputPosition ();
+				Vector2 homePos = entity.Home.transform.position;
 
 				// Clamp to max distance from home.
+				if (Vector2.Distance (entityPos, homePos) > maxDistance) {
+					entityPos = MathUtil.RadialPosition (
+						maxDistance, MathUtil.AngleBetweenPoints (entityPos, homePos), homePos);
+				}
+
+				// Place the entity at the current input position.
+				entity.transform.position = entityPos;
 			}
 		}
 	}
