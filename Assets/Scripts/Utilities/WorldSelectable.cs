@@ -22,13 +22,30 @@ public class WorldSelectable : MonoBehaviour {
 			// Use mouse position to determine 
 			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 touchPos = new Vector2(wp.x, wp.y);
-			Collider2D col = Physics2D.OverlapPoint (touchPos);
-			if (col != null) {
-				WorldSelectable selected = col.GetComponentInChildren<WorldSelectable> ();
-				if (selected != null) {
-					selected.OnSelect.Invoke ();
-				}
+			SelectAtPos (touchPos);
+		}
+	}
+
+	/// <summary>
+	/// Tries to select something at the specified position.
+	/// </summary>
+	/// <param name="pos">Position to select at.</param>
+	private static void SelectAtPos (Vector2 pos) {
+		Collider2D col = Physics2D.OverlapPoint (pos);
+		WorldSelectable selected = null;
+		if (col != null) {
+			selected = col.GetComponentInChildren<WorldSelectable> ();
+			if (selected != null) {
+				selected.OnSelect.Invoke ();
 			}
 		}
+
+		#if UNITY_EDITOR
+
+		if (selected != null) {
+			UnityEditor.Selection.activeGameObject = selected.gameObject;
+		}
+
+		#endif
 	}
 }
