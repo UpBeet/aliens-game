@@ -17,6 +17,11 @@ public class LaunchController : MonoBehaviour {
 	private float maxDistance = 10f;
 
 	/// <summary>
+	/// The minimum distance you can pull. Releasing before this threshold will cancel the launch.
+	/// </summary>
+	private float minDistance = 1f;
+
+	/// <summary>
 	/// If set to true, the entity is in the player's hands.
 	/// </summary>
 	private bool grabbed = false;
@@ -76,5 +81,31 @@ public class LaunchController : MonoBehaviour {
 				entity.transform.position = entityPos;
 			}
 		}
+
+		// Check if the mouse is released while grabbed.
+		if (grabbed && Input.GetMouseButtonUp (0)) {
+			Release ();
+		}
+	}
+
+	/// <summary>
+	/// Release the launch.
+	/// </summary>
+	private void Release () {
+
+		// Cache scoped copies of entity and planet positions.
+		Vector2 entityPos = entity.transform.position;
+		Vector2 homePos = entity.Home.transform.position;
+
+		// Get the distance that the user pulled the entity.
+		float distance = Vector2.Distance (entityPos, homePos);
+
+		// Check if it is below the cancel threshold.
+		if (distance < minDistance) {
+			entity.CancelLaunch ();
+			return;
+		}
+
+		float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
 	}
 }

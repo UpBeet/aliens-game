@@ -141,6 +141,15 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Cancels the launch state.
+	/// </summary>
+	public void CancelLaunch () {
+		Destroy (GetComponent<LaunchController> ());
+		AttachToSpaceMass (home);
+		UserInterface.Select (home.GetComponent<WorldSelectable> ());
+	}
+
+	/// <summary>
 	/// Sets the entity's state properly.
 	/// </summary>
 	/// <param name="newState">New state.</param>
