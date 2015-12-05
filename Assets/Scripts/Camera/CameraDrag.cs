@@ -119,6 +119,9 @@ public class CameraDrag : MonoBehaviour {
 			transform.localPosition = new Vector3 (transform.localPosition.x - velocity.x,
 				transform.localPosition.y - velocity.y, -100);
 		}
+
+		// Lock local rotation.
+		transform.rotation = Quaternion.identity;
 	}
 
 	/// <summary>
