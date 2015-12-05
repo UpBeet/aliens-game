@@ -61,7 +61,7 @@ public class SpaceMass : MonoBehaviour {
 	/// <summary>
 	/// Initialize this component.
 	/// </summary>
-	private void Start () {
+	void Start () {
 
 		// Initialize the SpaceMass with initial values.
 		Initialize (size, orbitalPrimary, orbitSpeed, orbitsClockwise, distanceToPrimary, angleToPrimary, food);
@@ -70,7 +70,7 @@ public class SpaceMass : MonoBehaviour {
 	/// <summary>
 	/// Update this component.
 	/// </summary>
-	private void Update () {
+	void Update () {
 
 		// If this body orbits a primary, update the orbit.
 		if (orbitalPrimary != null) {
