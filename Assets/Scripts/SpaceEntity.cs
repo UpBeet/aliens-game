@@ -11,9 +11,23 @@ public class SpaceEntity : MonoBehaviour {
 	private const float BEHAVIOR_UPDATE_FREQUENCY = 2f;
 
 	/// <summary>
+	/// Describes the current state of a SpaceEntity.
+	/// </summary>
+	private enum SpaceEntityState {
+		Floating,
+		Attached,
+		Launching,
+	};
+
+	/// <summary>
 	/// A space entity's home is the SpaceMass they are bound to.
 	/// </summary>
 	[SerializeField] private SpaceMass home = null;
+
+	/// <summary>
+	/// The current state of this SpaceEntity.
+	/// </summary>
+	private SpaceEntityState state = SpaceEntityState.Floating;
 
 	/// <summary>
 	/// The species this SpaceEntity is a member of.
@@ -37,7 +51,7 @@ public class SpaceEntity : MonoBehaviour {
 
 		// If this entity starts with a home, attach to it.
 		if (home != null) {
-			AttachToSpaceMass (home); 
+			AttachToSpaceMass (home);
 		}
 	}
 
@@ -47,7 +61,7 @@ public class SpaceEntity : MonoBehaviour {
 	void Update () {
 
 		// Test entity walking around on home.
-		if (home != null) {
+		if (home != null && state == SpaceEntityState.Attached) {
 			MoveAlongSurface (wanderingVelocity * Time.deltaTime);
 		}
 	}
@@ -74,19 +88,19 @@ public class SpaceEntity : MonoBehaviour {
 	/// <param name="spaceMass">New SpaceMass home for this entity.</param>
 	public void AttachToSpaceMass (SpaceMass spaceMass) {
 
-		// Cancel idle wandering.
-		CancelInvoke ("UpdateIdleWandering");
-
 		// Base case: detachment.
 		if (spaceMass == null) {
 			home = null;
 			transform.SetParent (null);
+			SetIsWalking (false);
+			SetState (SpaceEntityState.Floating);
 			return;
 		}
 
 		// Attach the entity to the space mass.
 		home = spaceMass;
 		transform.SetParent (spaceMass.transform);
+		SetState (SpaceEntityState.Attached);
 
 		// Calculate and cache the current angle to the center of the space mass.
 		angleToHome = MathUtil.AngleBetweenPoints (transform.position, home.transform.position);
@@ -94,8 +108,50 @@ public class SpaceEntity : MonoBehaviour {
 		// Update the entity's position against its new home mass.
 		UpdatePosition ();
 
-		// Reset idle wandering.
-		InvokeRepeating ("UpdateIdleWandering", Random.Range (0, BEHAVIOR_UPDATE_FREQUENCY), BEHAVIOR_UPDATE_FREQUENCY);
+		// Start walking along the home.
+		SetIsWalking (true);
+	}
+
+	/// <summary>
+	/// Prepare this entity for launch.
+	/// </summary>
+	public void PrepareForLaunch () {
+		SetIsWalking (false);
+		SetState (SpaceEntityState.Launching);
+		Collider2D collider = GetComponent<Collider2D> ();
+		transform.localPosition = new Vector2 (
+			collider.offset.x,
+			collider.offset.y);
+	}
+
+	/// <summary>
+	/// Sets the entity's state properly.
+	/// </summary>
+	/// <param name="newState">New state.</param>
+	private void SetState (SpaceEntityState newState) {
+
+		// Exit previous state.
+
+		// Copy new state.
+		state = newState;
+
+		// Perform state changes.
+		Animator anim = GetComponentInChildren<Animator> ();
+		Vector2 spriteOffset = Vector2.zero;;
+		switch (state) {
+		case SpaceEntityState.Floating:
+		case SpaceEntityState.Launching:
+			anim.Play ("Idle Floating");
+			break;
+		case SpaceEntityState.Attached:
+			anim.Play ("Idle Attached");
+			spriteOffset = new Vector2 (0f, 0.5f);
+			break;
+		}
+
+		// Apply offset changes.
+		GetComponent<Collider2D> ().offset = spriteOffset;
+		GetComponentInChildren<SpriteRenderer> ().transform.localPosition = spriteOffset;
 	}
 
 	/// <summary>
@@ -130,6 +186,23 @@ public class SpaceEntity : MonoBehaviour {
 
 			// Make this entity face inwards.
 			transform.localRotation = Quaternion.Euler (0, 0, Mathf.Rad2Deg * angleToHome - 90);
+		}
+	}
+
+	/// <summary>
+	/// Sets whether or not this SpaceEntity is walking along its home planet.
+	/// </summary>
+	/// <param name="isWalking">If set to <c>true</c> is walking.</param>
+	private void SetIsWalking (bool isWalking) {
+
+		// Cancel the invoke to make sure it doesn't get repeated.
+		CancelInvoke ("UpdateIdleWandering");
+
+		// Check if we want this entity to walk, and we have a planet to walk on.
+		if (isWalking && home != null) {
+
+			// Reset idle wandering.
+			InvokeRepeating ("UpdateIdleWandering", Random.Range (0, BEHAVIOR_UPDATE_FREQUENCY), BEHAVIOR_UPDATE_FREQUENCY);
 		}
 	}
 

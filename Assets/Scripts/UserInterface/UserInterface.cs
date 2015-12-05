@@ -86,7 +86,7 @@ public class UserInterface : MonoBehaviour {
 		// Check if the selection is a SpaceEntity.
 		SpaceEntity entity = selected.GetComponent<SpaceEntity> ();
 		if (entity != null) {
-			Debug.LogWarning ("Prepare " + entity.name + " for launch.");
+			entity.PrepareForLaunch ();
 		}
 
 		// Otherwise, we can't launch this thing.
