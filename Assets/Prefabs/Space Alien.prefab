@@ -43,6 +43,7 @@ GameObject:
   - 114: {fileID: 11453048}
   - 114: {fileID: 11491710}
   - 58: {fileID: 5899916}
+  - 50: {fileID: 5024484}
   - 114: {fileID: 11420042}
   m_Layer: 8
   m_Name: Space Alien
@@ -89,6 +90,22 @@ Transform:
   - {fileID: 442796}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!50 &5024484
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195482}
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: .0500000007
+  m_GravityScale: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!58 &5899916
 CircleCollider2D:
   m_ObjectHideFlags: 1
