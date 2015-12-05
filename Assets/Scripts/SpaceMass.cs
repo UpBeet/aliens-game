@@ -105,7 +105,7 @@ public class SpaceMass : MonoBehaviour {
 		this.food = food;
 
 		// Apply the logical size to the physical body.
-		gameObject.GetComponentInChildren<CircleCollider2D> ().radius = size;
+		gameObject.GetComponentInChildren<CircleCollider2D> ().radius = size / 2;
 		gameObject.GetComponentInChildren<Renderer> ().transform.localScale = Vector3.one * size;
 
 		// If this body orbits a primary, initialize the orbit.
