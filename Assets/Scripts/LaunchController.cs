@@ -22,6 +22,11 @@ public class LaunchController : MonoBehaviour {
 	private float minDistance = 1f;
 
 	/// <summary>
+	/// The amount of force per unity of distance pulled.
+	/// </summary>
+	private float forceCoefficient = 100f;
+
+	/// <summary>
 	/// If set to true, the entity is in the player's hands.
 	/// </summary>
 	private bool grabbed = false;
@@ -110,6 +115,7 @@ public class LaunchController : MonoBehaviour {
 		float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
 
 		// Release the entity and apply a force.
-		// entity.GetComponent<Rigidbody2D> ().AddForce (
+		entity.GetComponent<Rigidbody2D> ().AddForce (
+			MathUtil.Vector2FromMagnitudeAndAngle (-distance, angle) * forceCoefficient);
 	}
 }
