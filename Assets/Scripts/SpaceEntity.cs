@@ -62,6 +62,13 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Select this SpaceEntity.
+	/// </summary>
+	public void Select () {
+		UserInterface.Select (GetComponent<WorldSelectable> ());
+	}
+
+	/// <summary>
 	/// Attaches this entity to the specified SpaceMass.
 	/// </summary>
 	/// <param name="spaceMass">New SpaceMass home for this entity.</param>
@@ -89,13 +96,6 @@ public class SpaceEntity : MonoBehaviour {
 
 		// Reset idle wandering.
 		InvokeRepeating ("UpdateIdleWandering", Random.Range (0, BEHAVIOR_UPDATE_FREQUENCY), BEHAVIOR_UPDATE_FREQUENCY);
-	}
-
-	/// <summary>
-	/// Select this SpaceEntity.
-	/// </summary>
-	public void Select () {
-		UserInterface.Select (GetComponent<WorldSelectable> ());
 	}
 
 	/// <summary>
