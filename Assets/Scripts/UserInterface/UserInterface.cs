@@ -21,6 +21,13 @@ public class UserInterface : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Update this component.
+	/// </summary>
+	void Update () {
+		Selectable.Update ();
+	}
+
+	/// <summary>
 	/// Selects the specified space mass.
 	/// </summary>
 	/// <param name="spaceMass">Selected space mass.</param>

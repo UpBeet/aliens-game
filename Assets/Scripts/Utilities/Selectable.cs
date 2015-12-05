@@ -10,11 +10,11 @@ public class Selectable : MonoBehaviour {
 	/// Fires when this GameObject is selected.
 	/// </summary>
 	public UnityEvent OnSelect = new UnityEvent ();
-	
+
 	/// <summary>
 	/// Update this component.
 	/// </summary>
-	private void Update () {
+	public static void Update () {
 
 		// Listen for left mouse button release.
 		if (Input.GetMouseButtonUp (0)) {
@@ -23,8 +23,11 @@ public class Selectable : MonoBehaviour {
 			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 touchPos = new Vector2(wp.x, wp.y);
 			Collider2D col = Physics2D.OverlapPoint (touchPos);
-			if (col == GetComponentInChildren<Collider2D> ()) {
-				OnSelect.Invoke ();
+			if (col != null) {
+				Selectable selected = col.GetComponentInChildren<Selectable> ();
+				if (selected != null) {
+					selected.OnSelect.Invoke ();
+				}
 			}
 		}
 	}
