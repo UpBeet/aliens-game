@@ -7,6 +7,20 @@
 public class LaunchController : MonoBehaviour {
 
 	/// <summary>
+	/// Describes the current state of the LaunchController.
+	/// </summary>
+	private enum LaunchState {
+		Free,
+		Grabbed,
+		Released,
+	}
+
+	/// <summary>
+	/// The current state of the LaunchController.
+	/// </summary>
+	private LaunchState state = LaunchState.Free;
+
+	/// <summary>
 	/// Reference to the SpaceEntity.
 	/// </summary>
 	private SpaceEntity entity;
@@ -25,11 +39,6 @@ public class LaunchController : MonoBehaviour {
 	/// The amount of force per unity of distance pulled.
 	/// </summary>
 	private float forceCoefficient = 100f;
-
-	/// <summary>
-	/// If set to true, the entity is in the player's hands.
-	/// </summary>
-	private bool grabbed = false;
 
 	/// <summary>
 	/// Initialize this component.
@@ -55,22 +64,28 @@ public class LaunchController : MonoBehaviour {
 	/// Update this component.
 	/// </summary>
 	void Update () {
-	
-		// The mouse button is pressed down.
-		if (Input.GetMouseButtonDown (0)) {
 
-			// Check if we hit the entity with the grab.
-			Collider2D col = UnityUtil.GetCollider2DUnderInput ("Entities");
-			if (col == GetComponentInChildren<Collider2D> ()) {
-				grabbed = true;
+		// Controls during the free state.
+		if (state == LaunchState.Free) {
+	
+			// The mouse button is pressed down.
+			if (Input.GetMouseButtonDown (0)) {
+
+				// Check if we hit the entity with the grab.
+				Collider2D col = UnityUtil.GetCollider2DUnderInput ("Entities");
+				if (col == GetComponentInChildren<Collider2D> ()) {
+
+					// Begin grabbing.
+					state = LaunchState.Grabbed;
+				}
 			}
 		}
 
-		// Check if we keep the mouse button down.
-		if (Input.GetMouseButton (0)) {
+		// Controls during the grabbed state.
+		else if (state == LaunchState.Grabbed) {
 
-			// Check if we are grabbing the entity.
-			if (grabbed) {
+			// Check if we keep the mouse button down.
+			if (Input.GetMouseButton (0)) {
 
 				// Create a scoped copy of the entity and planet positions.
 				Vector2 entityPos = UnityUtil.GetInputPosition ();
@@ -85,11 +100,15 @@ public class LaunchController : MonoBehaviour {
 				// Place the entity at the current input position.
 				entity.transform.position = entityPos;
 			}
+
+			// Check if the mouse is released while grabbed.
+			if (Input.GetMouseButtonUp (0)) {
+				Release ();
+			}
 		}
 
-		// Check if the mouse is released while grabbed.
-		if (grabbed && Input.GetMouseButtonUp (0)) {
-			Release ();
+		// Controls during the released state.
+		else if (state == LaunchState.Released) {
 		}
 	}
 
@@ -110,6 +129,9 @@ public class LaunchController : MonoBehaviour {
 			entity.CancelLaunch ();
 			return;
 		}
+
+		// Switch to released state.
+		state = LaunchState.Released;
 
 		// Calculate the launch angle.
 		float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
