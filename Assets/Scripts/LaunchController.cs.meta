@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: eed372bea1fba48838bb79b959c7a9d1
-timeCreated: 1449335645
+timeCreated: 1449366310
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - floatingParticles: {fileID: 19805920, guid: ac119015efaba4488825e44471495d85,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

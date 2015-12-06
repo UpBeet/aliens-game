@@ -41,6 +41,16 @@ public class LaunchController : MonoBehaviour {
 	private float forceCoefficient = 100f;
 
 	/// <summary>
+	/// The position of the entity last frame. Used after release.
+	/// </summary>
+	private Vector2 prevEntityPos;
+
+	/// <summary>
+	/// The amount of distance the entity has to travel before being freed. Used after release.
+	/// </summary>
+	private float distanceToTravel = 0f;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
@@ -115,17 +125,24 @@ public class LaunchController : MonoBehaviour {
 			Vector2 entityPos = entity.transform.position;
 			Vector2 homePos = entity.Home.transform.position;
 
-			// Check if we should still be applying force.
-			float distance = Vector2.Distance (entityPos, homePos);
-			if (distance >= minDistance) {
+			// Record change in distance since last frame.
+			float distanceTravelled = Vector2.Distance (entityPos, prevEntityPos);
+			distanceToTravel -= distanceTravelled;
 
-				// Calculate the launch angle.
+			// Check if we should still be applying force.
+			if (distanceToTravel > 0) {
+
+				// Calculate remaining distance and launch angle.
+				float distance = Vector2.Distance (entityPos, homePos);
 				float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
 
 				// Release the entity and apply a force.
 				entity.GetComponent<Rigidbody2D> ().AddForce (
 					MathUtil.Vector2FromMagnitudeAndAngle (-distance, angle) * forceCoefficient * Time.deltaTime,
 					ForceMode2D.Impulse);
+
+				// Copy position from last frame.
+				prevEntityPos = entityPos;
 			}
 
 			// Otherwise we can free this entity.
@@ -152,6 +169,19 @@ public class LaunchController : MonoBehaviour {
 			entity.CancelLaunch ();
 			return;
 		}
+
+		// Record the distance the entity neds to travel.
+		distanceToTravel = distance;
+
+		// Instantiate particles.
+		ParticleSystem particles = Instantiate (Resources.Load<ParticleSystem> ("Floating Particles"));
+		particles.transform.SetParent (entity.transform);
+		particles.transform.localPosition = Vector3.zero;
+		particles.transform.localRotation = Quaternion.identity;
+		particles.transform.localScale = Vector3.zero;
+
+		// Copy current position into previous position.
+		prevEntityPos = entityPos;
 
 		// Switch to released state.
 		state = LaunchState.Released;
