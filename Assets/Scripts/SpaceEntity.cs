@@ -150,6 +150,16 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Free this entity from having been launched.
+	/// </summary>
+	public void FreeFromLaunch () {
+		Destroy (GetComponent<LaunchController> ());
+		AttachToSpaceMass (null);
+		Camera.main.GetComponent<CameraDrag> ().Follow (transform);
+		SetState (SpaceEntityState.Floating);
+	}
+
+	/// <summary>
 	/// Sets the entity's state properly.
 	/// </summary>
 	/// <param name="newState">New state.</param>

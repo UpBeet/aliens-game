@@ -52,6 +52,7 @@ public class LaunchController : MonoBehaviour {
 	/// Deinitialize this component.
 	/// </summary>
 	void OnDestroy () {
+		Debug.LogWarning ("destroyed");
 		if (Camera.main != null) {
 			CameraDrag drag = Camera.main.GetComponent<CameraDrag> ();
 			if (drag != null) {
@@ -109,6 +110,28 @@ public class LaunchController : MonoBehaviour {
 
 		// Controls during the released state.
 		else if (state == LaunchState.Released) {
+
+			// Cache a scoped copy of the entity and planet positions.
+			Vector2 entityPos = entity.transform.position;
+			Vector2 homePos = entity.Home.transform.position;
+
+			// Check if we should still be applying force.
+			float distance = Vector2.Distance (entityPos, homePos);
+			if (distance >= minDistance) {
+
+				// Calculate the launch angle.
+				float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
+
+				// Release the entity and apply a force.
+				entity.GetComponent<Rigidbody2D> ().AddForce (
+					MathUtil.Vector2FromMagnitudeAndAngle (-distance, angle) * forceCoefficient * Time.deltaTime,
+					ForceMode2D.Impulse);
+			}
+
+			// Otherwise we can free this entity.
+			else {
+				entity.FreeFromLaunch ();
+			}
 		}
 	}
 
@@ -132,12 +155,5 @@ public class LaunchController : MonoBehaviour {
 
 		// Switch to released state.
 		state = LaunchState.Released;
-
-		// Calculate the launch angle.
-		float angle = MathUtil.AngleBetweenPoints (entityPos, homePos);
-
-		// Release the entity and apply a force.
-		entity.GetComponent<Rigidbody2D> ().AddForce (
-			MathUtil.Vector2FromMagnitudeAndAngle (-distance, angle) * forceCoefficient);
 	}
 }
