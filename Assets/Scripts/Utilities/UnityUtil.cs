@@ -22,4 +22,48 @@ public static class UnityUtil {
 			Object.Destroy (transform.GetChild (i));
 		}
 	}
+
+	/// <summary>
+	/// Properly gets the Collider2D under the relevant input.
+	/// </summary>
+	/// <returns>The Collider2D under input.</returns>
+	public static Collider2D GetCollider2DUnderInput () {
+
+		// Get the input position.
+		Vector2 input = GetInputPosition ();
+
+		// Get the collider under the input and return it.
+		return Physics2D.OverlapPoint (input);
+	}
+
+	/// <summary>
+	/// Properly gets the Collider2D under the relevant input.
+	/// </summary>
+	/// <returns>The Collider2D under input.</returns>
+	/// <param name="layer">The string name of the LayerMask to restrict.</param>
+	public static Collider2D GetCollider2DUnderInput (string layer) {
+
+		// Get the input position.
+		Vector2 input = GetInputPosition ();
+
+		// Get the collider under the input and return it.
+		return Physics2D.OverlapPoint (input, 1 << LayerMask.NameToLayer (layer));
+	}
+
+	/// <summary>
+	/// Gets the platform-relevant input position.
+	/// </summary>
+	/// <returns>The input position.</returns>
+	public static Vector2 GetInputPosition () {
+
+		// Default to mouse position.
+		Vector2 input = Input.mousePosition;
+
+		// Use input to determine world position in 2D space.
+		Vector3 wp = Camera.main.ScreenToWorldPoint (input);
+		Vector2 inputPosition = new Vector2 (wp.x, wp.y);
+
+		// Return the calculated position.
+		return inputPosition;
+	}
 }

@@ -63,34 +63,14 @@ public class SpaceMass : MonoBehaviour {
 	/// </summary>
 	void Start () {
 
-		// Apply the logical size to the physical body.
-		gameObject.GetComponentInChildren<Collider2D> ().transform.localScale = Vector3.one * size;
-
-		// If this body orbits a primary, initialize the orbit.
-		if (orbitalPrimary != null) {
-
-			// Calculate the distance to the primary.
-			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
-
-			// Calculate the initial angle to the primary.
-			angleToPrimary = MathUtil.AngleBetweenPoints (transform.position, orbitalPrimary.transform.position);
-		}
+		// Initialize the SpaceMass with initial values.
+		Initialize (size, orbitalPrimary, orbitSpeed, orbitsClockwise, distanceToPrimary, angleToPrimary, food);
 	}
 
 	/// <summary>
 	/// Update this component.
 	/// </summary>
 	void Update () {
-
-		if (Input.GetMouseButtonUp (0))
-		{
-			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector2 touchPos = new Vector2(wp.x, wp.y);
-			Collider2D col = Physics2D.OverlapPoint (touchPos);
-			if (col == GetComponentInChildren<Collider2D> ()) {
-				UserInterface.SelectSpaceMass (this);
-			}
-		}
 
 		// If this body orbits a primary, update the orbit.
 		if (orbitalPrimary != null) {
@@ -99,7 +79,7 @@ public class SpaceMass : MonoBehaviour {
 			angleToPrimary += (orbitsClockwise ? -1 : 1) * orbitSpeed * Time.deltaTime;
 
 			// Recalculate and update the position of this object's transform.
-			transform.position = MathUtil.RadialPosition (
+			transform.position = MathUtil.Vector2FromMagnitudeAndAngle (
 				distanceToPrimary, angleToPrimary,orbitalPrimary.transform.position);
 		}
 	}
@@ -117,13 +97,35 @@ public class SpaceMass : MonoBehaviour {
 		bool orbitsClockwise, float orbitRadius, float startAngle,
 		int food = 5) {
 
+		// Copy logical data.
 		this.size = size;
 		this.orbitalPrimary = orbitalPrimary;
 		this.orbitSpeed = orbitSpeed;
 		this.orbitsClockwise = orbitsClockwise;
 		this.food = food;
 
-		transform.position = MathUtil.RadialPosition (orbitRadius, startAngle,
-			orbitalPrimary == null ? Vector3.zero : orbitalPrimary.transform.position);
+		// Apply the logical size to the physical body.
+		gameObject.GetComponentInChildren<CircleCollider2D> ().radius = size / 2;
+		gameObject.GetComponentInChildren<Renderer> ().transform.localScale = Vector3.one * size;
+
+		// If this body orbits a primary, initialize the orbit.
+		if (orbitalPrimary != null) {
+
+			// Position in orbit.
+			transform.position = MathUtil.Vector2FromMagnitudeAndAngle (orbitRadius, startAngle, orbitalPrimary.transform.position);
+
+			// Calculate the distance to the primary.
+			distanceToPrimary = Vector2.Distance (transform.position, orbitalPrimary.transform.position);
+
+			// Calculate the initial angle to the primary.
+			angleToPrimary = MathUtil.AngleBetweenPoints (transform.position, orbitalPrimary.transform.position);
+		}
+	}
+
+	/// <summary>
+	/// Select this SpaceMass.
+	/// </summary>
+	public void Select () {
+		UserInterface.Select (GetComponent<WorldSelectable> ());
 	}
 }

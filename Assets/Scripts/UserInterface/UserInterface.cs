@@ -11,10 +11,7 @@ public class UserInterface : MonoBehaviour {
 	/// </summary>
 	private static UserInterface singleton;
 
-	/// <summary>
-	/// The currently selected SpaceMass.
-	/// </summary>
-	private static SpaceMass selected;
+	private static WorldSelectable selected;
 
 	/// <summary>
 	/// Initialize this component.
@@ -24,40 +21,77 @@ public class UserInterface : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Update this component.
+	/// </summary>
+	void Update () {
+		WorldSelectable.Update ();
+	}
+
+	/// <summary>
 	/// Selects the specified space mass.
 	/// </summary>
 	/// <param name="spaceMass">Selected space mass.</param>
-	public static void SelectSpaceMass (SpaceMass spaceMass) {
+	public static void Select (WorldSelectable incomingSelected) {
 
-		// If there was a previously selected SpaceMass, deselect it.
+		// If there was a previous selection, deselect it.
 		if (selected != null) {
-			selected.GetComponentInChildren<HighlightingSystem.Highlighter> ().Off ();
+
+			// Check if there is a Highlighter component on the previous selection.
+			HighlightingSystem.Highlighter highlighter = selected.GetComponentInChildren<HighlightingSystem.Highlighter> ();
+
+			// If so, disable it.
+			if (highlighter) {
+				highlighter.Off ();
+			}
 		}
 
-		// Record the newly selected mass.
-		selected = spaceMass;
+		// Record the new selection
+		selected = incomingSelected;
 
 		// Get the selected planet panel.
-		HideableInterfaceElement selectedPlanetPanel = singleton.transform.Find ("Selected Planet").GetComponent<HideableInterfaceElement> ();
+		HideableInterfaceElement selectedPanel = singleton.transform.Find ("Selected Panel").GetComponent<HideableInterfaceElement> ();
 
 		// Base case: deselection.
 		if (selected == null) {
-			selectedPlanetPanel.Hide ();
+			selectedPanel.Hide ();
 			return;
 		}
 
 		// Set the name text.
-		Text selectedPlanetNameText = selectedPlanetPanel.transform.Find ("Planet Name").GetComponent<Text> ();
-		selectedPlanetNameText.text = selected.name;
+		Text selectedNameText = selectedPanel.transform.Find ("Name Text").GetComponent<Text> ();
+		selectedNameText.text = selected.name;
 
 		// Show the panel.
-		selectedPlanetPanel.Show ();
+		selectedPanel.Show ();
 
 		// Highlight the selected mass.
 		selected.GetComponentInChildren<HighlightingSystem.Highlighter> ().ConstantOn ();
 
 		// Focus the camera on the selected planet.
 		Camera.main.GetComponent<CameraDrag> ().Follow (selected.transform);
-		Camera.main.GetComponent<CameraZoom> ().Focus (selected.Size);
+		Camera.main.GetComponent<CameraZoom> ().Focus (selected.GetComponentInChildren<Renderer> ().bounds.size.magnitude);
+	}
+
+	/// <summary>
+	/// Called when the Launch button is pressed.
+	/// </summary>
+	public void OnLaunchButtonPressed () {
+
+		// If nothing is selected, this won't work. Exit out and print an error.
+		if (selected == null) {
+			Debug.LogError ("Nothing selected to launch.");
+			return;
+		}
+
+		// Check if the selection is a SpaceEntity.
+		SpaceEntity entity = selected.GetComponent<SpaceEntity> ();
+		if (entity != null) {
+			entity.PrepareForLaunch ();
+		}
+
+		// Otherwise, we can't launch this thing.
+		else {
+			Debug.LogWarning ("Can't launch this " + selected.name + " thing.");
+		}
 	}
 }

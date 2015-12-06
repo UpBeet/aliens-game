@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// If you attach a UniverseGenerator component to a GameObject, it will procedurally generate a universe. You
-/// probably only need one of those in the scene at a time.
+/// Manages a Universe in the game Scene. Includes functionality for generating and maintaing a Universe of
+/// SpaceMasses and SpaceEntities and other game logic.
 /// </summary>
-public class UniverseGenerator : MonoBehaviour {
+public class Universe : MonoBehaviour {
 
 	/// <summary>
 	/// Reference to the basic SpaceMass prefab.
@@ -19,22 +19,22 @@ public class UniverseGenerator : MonoBehaviour {
 	/// <summary>
 	/// The size of the first mass generated.
 	/// </summary>
-	[SerializeField] private float startingMassSize = 20f;
+	[SerializeField] private Vector2 starMassSizeRange = new Vector2 (10f, 20f);
+
+	/// <summary>
+	/// The minimum relative proportionate scale of a primary's generated satellite.
+	/// </summary>
+	[SerializeField] private Vector2 satelliteDiminishRange = new Vector2 (0.1f, 0.5f);
+
+	/// <summary>
+	/// The distance between the centers of solar systems.
+	/// </summary>
+	[SerializeField] private float starSpacing = 100f;
 
 	/// <summary>
 	/// The size at which planets stop generating children.
 	/// </summary>
 	[SerializeField] private float minPlanetSize = 1f;
-
-	/// <summary>
-	/// The minimum relative proportionate scale of a primary's generated satellite.
-	/// </summary>
-	[SerializeField] private float minSizeOfPrimary = 0.1f;
-
-	/// <summary>
-	/// The maximum relative proportionate scale of a primary's generated satellite.
-	/// </summary>
-	[SerializeField] private float maxSizeOfPrimary = 0.5f;
 
 	/// <summary>
 	/// The player's home in this universe.
@@ -45,13 +45,13 @@ public class UniverseGenerator : MonoBehaviour {
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
-		GenerateUniverse ();
+		GenerateUniverse (2);
 	}
 
 	/// <summary>
 	/// Procedurally generates a new universe, clearing the old one if there is one.
 	/// </summary>
-	public void GenerateUniverse () {
+	public void GenerateUniverse (int length = 1) {
 
 		// Clear the old universe.
 		gameObject.DestroyAllChildren ();
@@ -59,8 +59,14 @@ public class UniverseGenerator : MonoBehaviour {
 		// Reset the player's home.
 		home = null;
 
-		// Start by instantiating the center of the universe.
-		GenerateSpaceMass ();
+		// Generate the systems throughout the universe.
+		for (int x = 0; x < length; x++) {
+			for (int y = 0; y < length; y++) {
+
+				// Start recursively creating masses.
+				GenerateSpaceMass (0, null, 0, x * starSpacing, y * starSpacing);
+			}
+		}
 
 		// Configure the home planet.
 		if (home != null) {
@@ -74,7 +80,7 @@ public class UniverseGenerator : MonoBehaviour {
 			}
 
 			// Select the home planet.
-			UserInterface.SelectSpaceMass (home);
+			home.Select ();
 		}
 	}
 
@@ -83,7 +89,8 @@ public class UniverseGenerator : MonoBehaviour {
 	/// </summary>
 	/// <param name="generation">Generation.</param>
 	/// <param name="primary">Primary.</param>
-	private void GenerateSpaceMass (int generation = 0, SpaceMass primary = null, int satelliteIndex = 0) {
+	private void GenerateSpaceMass (int generation = 0, SpaceMass primary = null,
+		int satelliteIndex = 0, float originX = 0, float originY = 0) {
 
 		// Base case: primary is too small to have satellites.
 		if (primary != null && primary.Size < minPlanetSize) {
@@ -95,14 +102,16 @@ public class UniverseGenerator : MonoBehaviour {
 
 		// Base case: start planet.
 		if (primary == null) {
-			newSpaceMass.Initialize (startingMassSize, null, 0, false, 0, 0);
+			newSpaceMass.Initialize (Random.Range (starMassSizeRange.x, starMassSizeRange.y), null, 0,
+				false, 0, 0);
+			newSpaceMass.transform.position = new Vector2 (originX, originY);
 		}
 
 		// Initialize a random satellite planet.
 		else {
 
 			// The size is a randomly selection proportion of the primary.
-			float size = primary.Size * Random.Range (minSizeOfPrimary, maxSizeOfPrimary);
+			float size = primary.Size * Random.Range (satelliteDiminishRange.x, satelliteDiminishRange.y);
 
 			// Orbital speed is based on the size of the mass.
 			float orbitalSpeed = Random.Range (0f, 1f) / size;
@@ -134,26 +143,20 @@ public class UniverseGenerator : MonoBehaviour {
 		// Color the planet according to its generation.
 		Color color = Color.grey;
 		if (generation == 0) {
-			color = Color.white;
-		}
-		else if (generation == 1) {
 			color = Color.yellow;
 		}
-		else if (generation == 2) {
+		else if (generation == 1) {
 			color = Color.green;
 
-			// Pick the first generation 2 planet as home for testing.
+			// Pick the first generation 1 planet as home for testing.
 			if (home == null) {
 				home = newSpaceMass;
 			}
 		}
-		else if (generation == 3) {
-			color = Color.grey;
-		}
 		newSpaceMass.GetComponentInChildren<Renderer> ().material.SetColor ("_Color", color);
 
 		// Determine the number of satellites along a normal curve.
-		int numSatellites = (int)MathUtil.RandomFromNormalDistribution (6 / (generation + 1), 1, true);
+		int numSatellites = (int)MathUtil.RandomFromNormalDistribution (6 / ((generation + 1) * 2), 1, true);
 
 		// Generate satellite.
 		for (int i = 0; i < numSatellites; i++) {
