@@ -28,7 +28,7 @@ public class LaunchController : MonoBehaviour {
 	/// <summary>
 	/// The maximum distance you can pull an entity while launching them.
 	/// </summary>
-	private float maxDistance = 10f;
+	private float maxDistance = 5f;
 
 	/// <summary>
 	/// The minimum distance you can pull. Releasing before this threshold will cancel the launch.
@@ -38,7 +38,7 @@ public class LaunchController : MonoBehaviour {
 	/// <summary>
 	/// The amount of force per unity of distance pulled.
 	/// </summary>
-	private float forceCoefficient = 100f;
+	private float forceCoefficient = 10f;
 
 	/// <summary>
 	/// The position of the entity last frame. Used after release.

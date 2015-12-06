@@ -104,9 +104,7 @@ public class SpaceEntity : MonoBehaviour {
 		// Base case: detachment.
 		if (spaceMass == null) {
 			home = null;
-			transform.SetParent (null);
-			SetIsWalking (false);
-			SetState (SpaceEntityState.Floating);
+			FreeIntoSpace ();
 			return;
 		}
 
@@ -154,7 +152,7 @@ public class SpaceEntity : MonoBehaviour {
 	/// </summary>
 	public void FreeFromLaunch () {
 		Destroy (GetComponent<LaunchController> ());
-		AttachToSpaceMass (null);
+		FreeIntoSpace ();
 		Camera.main.GetComponent<CameraDrag> ().Follow (transform);
 		SetState (SpaceEntityState.Floating);
 	}
@@ -190,6 +188,15 @@ public class SpaceEntity : MonoBehaviour {
 		// Apply offset changes.
 		GetComponent<Collider2D> ().offset = spriteOffset;
 		GetComponentInChildren<SpriteRenderer> ().transform.localPosition = spriteOffset;
+	}
+
+	/// <summary>
+	/// Frees this entity into empty space but maintains a reference to its home planet.
+	/// </summary>
+	private void FreeIntoSpace () {
+		transform.SetParent (null);
+		SetIsWalking (false);
+		SetState (SpaceEntityState.Floating);
 	}
 
 	/// <summary>
