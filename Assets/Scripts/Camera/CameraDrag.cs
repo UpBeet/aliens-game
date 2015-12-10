@@ -140,6 +140,8 @@ public class CameraDrag : MonoBehaviour {
 	public void Follow (Transform focus) {
 		this.focus = focus;
 		transform.SetParent (focus);
-		Focus (focus.position);
+		if (focus != null) {
+			Focus (focus.position);
+		}
 	}
 }

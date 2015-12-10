@@ -62,8 +62,7 @@ public class LaunchController : MonoBehaviour {
 	/// Deinitialize this component.
 	/// </summary>
 	void OnDestroy () {
-		Debug.LogWarning ("destroyed");
-		if (Camera.main != null) {
+		if (Camera.main != null && GetComponent<FloatingController> () == null) {
 			CameraDrag drag = Camera.main.GetComponent<CameraDrag> ();
 			if (drag != null) {
 				drag.enabled = true;
