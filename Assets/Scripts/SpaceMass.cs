@@ -63,6 +63,9 @@ public class SpaceMass : MonoBehaviour {
 	/// </summary>
 	void Start () {
 
+		// Rebuild the circle mesh.
+		GetComponentInChildren<Circle> ().Rebuild ();
+
 		// Initialize the SpaceMass with initial values.
 		Initialize (size, orbitalPrimary, orbitSpeed, orbitsClockwise, distanceToPrimary, angleToPrimary, food);
 	}
