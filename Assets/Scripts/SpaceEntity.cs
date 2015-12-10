@@ -154,6 +154,7 @@ public class SpaceEntity : MonoBehaviour {
 		Destroy (GetComponent<LaunchController> ());
 		FreeIntoSpace ();
 		Camera.main.GetComponent<CameraDrag> ().Follow (transform);
+		gameObject.AddComponent<FloatingController> ();
 		SetState (SpaceEntityState.Floating);
 	}
 
