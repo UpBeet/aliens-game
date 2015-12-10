@@ -44,6 +44,11 @@ public class SpaceMass : MonoBehaviour {
 	[SerializeField] private bool orbitsClockwise = true;
 
 	/// <summary>
+	/// If set to true, this planet will accept incoming entities as new inhabitants.
+	/// </summary>
+	[SerializeField] private bool habitable = false;
+
+	/// <summary>
 	/// The amount of food on this space mass.
 	/// </summary>
 	[SerializeField] private int food = 5;
@@ -67,7 +72,7 @@ public class SpaceMass : MonoBehaviour {
 		GetComponentInChildren<Circle> ().Rebuild ();
 
 		// Initialize the SpaceMass with initial values.
-		Initialize (size, orbitalPrimary, orbitSpeed, orbitsClockwise, distanceToPrimary, angleToPrimary, food);
+		Initialize (size, orbitalPrimary, orbitSpeed, orbitsClockwise, distanceToPrimary, angleToPrimary, habitable, food);
 	}
 
 	/// <summary>
@@ -88,6 +93,22 @@ public class SpaceMass : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Fires when a 2D trigger enters this collider.
+	/// </summary>
+	void OnTriggerEnter2D (Collider2D other) {
+		SpaceEntity entity = other.GetComponent<SpaceEntity> ();
+		if (entity != null && entity.Home != this) {
+
+			if (habitable) {
+				entity.AttachToSpaceMass (this);
+			}
+			else {
+				entity.Die ();
+			}
+		}
+	}
+
+	/// <summary>
 	/// Reinitialize this space mass.
 	/// </summary>
 	/// <param name="size">Size.</param>
@@ -98,13 +119,14 @@ public class SpaceMass : MonoBehaviour {
 	/// <param name="startAngle">Start angle.</param>
 	public void Initialize (float size, SpaceMass orbitalPrimary, float orbitSpeed,
 		bool orbitsClockwise, float orbitRadius, float startAngle,
-		int food = 5) {
+		bool habitable = false, int food = 5) {
 
 		// Copy logical data.
 		this.size = size;
 		this.orbitalPrimary = orbitalPrimary;
 		this.orbitSpeed = orbitSpeed;
 		this.orbitsClockwise = orbitsClockwise;
+		this.habitable = habitable;
 		this.food = food;
 
 		// Apply the logical size to the physical body.

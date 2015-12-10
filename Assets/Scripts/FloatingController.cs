@@ -12,6 +12,13 @@ public class FloatingController : MonoBehaviour {
 	private float blowImpulse = 10f;
 
 	/// <summary>
+	/// Initialize this component.
+	/// </summary>
+	void Start () {
+		Camera.main.GetComponent<CameraDrag> ().enabled = false;
+	}
+
+	/// <summary>
 	/// Update this component.
 	/// </summary>
 	void Update () {
@@ -28,5 +35,20 @@ public class FloatingController : MonoBehaviour {
 				MathUtil.Vector2FromMagnitudeAndAngle (-blowImpulse, angle) * Time.deltaTime,
 				ForceMode2D.Impulse);
 		}
+	}
+
+	/// <summary>
+	/// Destroy this component.
+	/// </summary>
+	void OnDestroy () {
+		if (Camera.main != null) {
+			CameraDrag drag = Camera.main.GetComponent<CameraDrag> ();
+			if (drag != null) {
+				drag.enabled = true;
+			}
+		}
+
+		// Re-enable selection.
+		WorldSelectable.Enabled = true;
 	}
 }

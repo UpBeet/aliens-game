@@ -108,6 +108,9 @@ public class SpaceEntity : MonoBehaviour {
 			return;
 		}
 
+		// We are no longer floating.
+		Destroy (GetComponent<FloatingController> ());
+
 		// Attach the entity to the space mass.
 		home = spaceMass;
 		transform.SetParent (spaceMass.transform);
@@ -156,6 +159,18 @@ public class SpaceEntity : MonoBehaviour {
 		Camera.main.GetComponent<CameraDrag> ().Follow (transform);
 		gameObject.AddComponent<FloatingController> ();
 		SetState (SpaceEntityState.Floating);
+	}
+
+	/// <summary>
+	/// This entity dies.
+	/// </summary>
+	public void Die () {
+
+		// Release the Camera.
+		Camera.main.GetComponent<CameraDrag> ().Follow (null);
+
+		// Destroy this entity.
+		Destroy (gameObject);
 	}
 
 	/// <summary>
