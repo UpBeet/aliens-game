@@ -72,6 +72,7 @@ public class FloatingController : MonoBehaviour {
 
 		if (currentBreath <= 0) {
 			// destroy the alien when it suffocates
+			GetComponent<SpaceEntity>().Die();
 		}
 	}
 
