@@ -49,7 +49,7 @@ public class UserInterface : MonoBehaviour {
 		selected = incomingSelected;
 
 		// Get the selected planet panel.
-		HideableInterfaceElement selectedPanel = singleton.transform.Find ("Selected Panel").GetComponent<HideableInterfaceElement> ();
+		SelectedObjectPanelController selectedPanel = singleton.GetComponentInChildren<SelectedObjectPanelController> ();
 
 		// Base case: deselection.
 		if (selected == null) {
@@ -57,9 +57,8 @@ public class UserInterface : MonoBehaviour {
 			return;
 		}
 
-		// Set the name text.
-		Text selectedNameText = selectedPanel.transform.Find ("Name Text").GetComponent<Text> ();
-		selectedNameText.text = selected.name;
+		// Render information.
+		selectedPanel.ShowInformation (selected);
 
 		// Show the panel.
 		selectedPanel.Show ();
