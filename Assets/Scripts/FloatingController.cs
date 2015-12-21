@@ -59,6 +59,19 @@ public class FloatingController : MonoBehaviour {
 			GetComponent<Rigidbody2D> ().AddForce (
 				MathUtil.Vector2FromMagnitudeAndAngle (-blowImpulse, angle) * Time.deltaTime,
 				ForceMode2D.Impulse);
+
+			// Set blowing loss rate
+			currentBreathLossRate = breathLossRate * blowingLossRateMultiplier;
+		} else {
+			// Use base loss rate when not blowing
+			currentBreathLossRate = breathLossRate;
+		}
+
+		// Lose breath over time
+		currentBreath -= currentBreathLossRate;
+
+		if (currentBreath <= 0) {
+			// destroy the alien when it suffocates
 		}
 	}
 
