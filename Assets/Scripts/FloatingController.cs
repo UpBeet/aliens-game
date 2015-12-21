@@ -24,12 +24,12 @@ public class FloatingController : MonoBehaviour {
 	/// <summary>
 	/// The breath loss rate.
 	/// </summary>
-	[SerializeField] private float breathLossRate = 0.1f;
+	[SerializeField] private float breathLossRate = 2f;
 
 	/// <summary>
 	/// The blowing loss rate multiplier.
 	/// </summary>
-	[SerializeField] private float blowingLossRateMultiplier = 3f;
+	[SerializeField] private float blowingLossRateMultiplier = 5f;
 
 	/// <summary>
 	/// The current breath loss rate.
@@ -68,7 +68,7 @@ public class FloatingController : MonoBehaviour {
 		}
 
 		// Lose breath over time
-		currentBreath -= currentBreathLossRate;
+		currentBreath -= currentBreathLossRate * Time.deltaTime;
 
 		if (currentBreath <= 0) {
 			// destroy the alien when it suffocates
