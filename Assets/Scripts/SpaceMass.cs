@@ -54,6 +54,11 @@ public class SpaceMass : MonoBehaviour {
 	[SerializeField] private int food = 5;
 
 	/// <summary>
+	/// The amount of mutamins on this space mass.
+	/// </summary>
+	[SerializeField] private int mutamins = 5;
+
+	/// <summary>
 	/// The calculated distance between this body and its primary.
 	/// </summary>
 	private float distanceToPrimary;
