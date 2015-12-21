@@ -12,6 +12,31 @@ public class FloatingController : MonoBehaviour {
 	private float blowImpulse = 10f;
 
 	/// <summary>
+	/// Max breath an entity can have
+	/// </summary>
+	[SerializeField] private float maxBreath = 100f;
+
+	/// <summary>
+	/// Current remaining breath of the entity
+	/// </summary>
+	[SerializeField] private float currentBreath = 100f;
+
+	/// <summary>
+	/// The breath loss rate.
+	/// </summary>
+	[SerializeField] private float breathLossRate = 0.1f;
+
+	/// <summary>
+	/// The blowing loss rate multiplier.
+	/// </summary>
+	[SerializeField] private float blowingLossRateMultiplier = 3f;
+
+	/// <summary>
+	/// The current breath loss rate.
+	/// </summary>
+	private float currentBreathLossRate;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
