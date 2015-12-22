@@ -118,7 +118,7 @@ public class SpaceMass : MonoBehaviour {
 	/// </summary>
 	void OnTriggerEnter2D (Collider2D other) {
 		SpaceEntity entity = other.GetComponent<SpaceEntity> ();
-		if (entity != null && entity.Home != this) {
+		if (entity != null && entity.IsLoose && entity.Home != this) {
 
 			if (habitable) {
 				entity.AttachToSpaceMass (this);
