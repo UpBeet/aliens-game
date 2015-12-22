@@ -11,6 +11,9 @@ public class UserInterface : MonoBehaviour {
 	/// </summary>
 	private static UserInterface singleton;
 
+	/// <summary>
+	/// Currently selected WorldSelectable.
+	/// </summary>
 	private static WorldSelectable selected;
 
 	/// <summary>
@@ -72,6 +75,16 @@ public class UserInterface : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Select the specified WorldSelectable after time seconds.
+	/// </summary>
+	/// <param name="incomingSelected">Incoming selected.</param>
+	/// <param name="time">Time before selection.</param>
+	public static void SelectAfterPause (WorldSelectable incomingSelected, float time) {
+		selected = incomingSelected;
+		singleton.Invoke ("Reselect", time);
+	}
+
+	/// <summary>
 	/// Called when the Launch button is pressed.
 	/// </summary>
 	public void OnLaunchButtonPressed () {
@@ -92,5 +105,12 @@ public class UserInterface : MonoBehaviour {
 		else {
 			Debug.LogWarning ("Can't launch this " + selected.name + " thing.");
 		}
+	}
+
+	/// <summary>
+	/// Reselect the currently selected WorldSelectable.
+	/// </summary>
+	private void Reselect () {
+		UserInterface.Select (selected);
 	}
 }

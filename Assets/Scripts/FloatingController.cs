@@ -71,8 +71,18 @@ public class FloatingController : MonoBehaviour {
 		currentBreath -= currentBreathLossRate * Time.deltaTime;
 
 		if (currentBreath <= 0) {
+
+			// Get a reference to the floating space entity.
+			SpaceEntity entity = GetComponent<SpaceEntity> ();
+
+			// Prepare to select its home mass.
+			UserInterface.SelectAfterPause (entity.Home.GetComponent<WorldSelectable> (), 3f);
+
+			// Play particle effect.
+			Instantiate (Resources.Load<ParticleSystem> ("Pop Effect"), entity.transform.position, entity.transform.rotation);
+
 			// destroy the alien when it suffocates
-			GetComponent<SpaceEntity>().Die();
+			entity.Die();
 		}
 	}
 
