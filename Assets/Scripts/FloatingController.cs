@@ -12,6 +12,31 @@ public class FloatingController : MonoBehaviour {
 	private float blowImpulse = 10f;
 
 	/// <summary>
+	/// Max breath an entity can have
+	/// </summary>
+	[SerializeField] private float maxBreath = 100f;
+
+	/// <summary>
+	/// Current remaining breath of the entity
+	/// </summary>
+	[SerializeField] private float currentBreath = 100f;
+
+	/// <summary>
+	/// The breath loss rate.
+	/// </summary>
+	[SerializeField] private float breathLossRate = 2f;
+
+	/// <summary>
+	/// The blowing loss rate multiplier.
+	/// </summary>
+	[SerializeField] private float blowingLossRateMultiplier = 5f;
+
+	/// <summary>
+	/// The current breath loss rate.
+	/// </summary>
+	private float currentBreathLossRate;
+
+	/// <summary>
 	/// Initialize this component.
 	/// </summary>
 	void Start () {
@@ -34,6 +59,20 @@ public class FloatingController : MonoBehaviour {
 			GetComponent<Rigidbody2D> ().AddForce (
 				MathUtil.Vector2FromMagnitudeAndAngle (-blowImpulse, angle) * Time.deltaTime,
 				ForceMode2D.Impulse);
+
+			// Set blowing loss rate
+			currentBreathLossRate = breathLossRate * blowingLossRateMultiplier;
+		} else {
+			// Use base loss rate when not blowing
+			currentBreathLossRate = breathLossRate;
+		}
+
+		// Lose breath over time
+		currentBreath -= currentBreathLossRate * Time.deltaTime;
+
+		if (currentBreath <= 0) {
+			// destroy the alien when it suffocates
+			GetComponent<SpaceEntity>().Die();
 		}
 	}
 
