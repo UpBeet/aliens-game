@@ -24,6 +24,22 @@ public class SpaceMass : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Get the amount of food on this space mass.
+	/// </summary>
+	/// <value>The amount of food.</value>
+	public int Food {
+		get { return food; }
+	}
+
+	/// <summary>
+	/// Get the amount of mutrients on this space mass.
+	/// </summary>
+	/// <value>The amount of mutrients.</value>
+	public int Mutrients {
+		get { return mutrients; }
+	}
+
+	/// <summary>
 	/// The size of the space mass. Determines the scale of the sphere object on initialize.
 	/// </summary>
 	[SerializeField] private float size = 1f;
@@ -52,6 +68,11 @@ public class SpaceMass : MonoBehaviour {
 	/// The amount of food on this space mass.
 	/// </summary>
 	[SerializeField] private int food = 5;
+
+	/// <summary>
+	/// The amount of mutamins on this space mass.
+	/// </summary>
+	[SerializeField] private int mutrients = 5;
 
 	/// <summary>
 	/// The calculated distance between this body and its primary.
@@ -97,7 +118,7 @@ public class SpaceMass : MonoBehaviour {
 	/// </summary>
 	void OnTriggerEnter2D (Collider2D other) {
 		SpaceEntity entity = other.GetComponent<SpaceEntity> ();
-		if (entity != null && entity.Home != this) {
+		if (entity != null && entity.IsLoose && entity.Home != this) {
 
 			if (habitable) {
 				entity.AttachToSpaceMass (this);
@@ -117,9 +138,12 @@ public class SpaceMass : MonoBehaviour {
 	/// <param name="orbitsClockwise">If set to <c>true</c> orbits clockwise.</param>
 	/// <param name="orbitRadius">Orbit radius.</param>
 	/// <param name="startAngle">Start angle.</param>
+	/// <param name="habitable">If set to <c>true</c>, this planet is habitable.</param>
+	/// <param name="food">Amount of food on this planet.</param>
+	/// <param name="mutrients">Amount of mutrients on this planet.</param>
 	public void Initialize (float size, SpaceMass orbitalPrimary, float orbitSpeed,
 		bool orbitsClockwise, float orbitRadius, float startAngle,
-		bool habitable = false, int food = 5) {
+		bool habitable = false, int food = 5, int mutrients = 5) {
 
 		// Copy logical data.
 		this.size = size;
@@ -128,6 +152,7 @@ public class SpaceMass : MonoBehaviour {
 		this.orbitsClockwise = orbitsClockwise;
 		this.habitable = habitable;
 		this.food = food;
+		this.mutrients = mutrients;
 
 		// Apply the logical size to the physical body.
 		gameObject.GetComponentInChildren<CircleCollider2D> ().radius = size / 2;

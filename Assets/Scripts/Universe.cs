@@ -125,6 +125,15 @@ public class Universe : MonoBehaviour {
 			// Randomize initial orbit angle.
 			float orbitAngle = Random.Range (0, 2 * Mathf.PI);
 
+			// Generation 1 planets are habitable.
+			bool habitable = generation == 1;
+
+			// Normal randomize food amount.
+			int food = (int)MathUtil.RandomFromNormalDistribution (5, 1, true);
+
+			// Normal randomize mutrients amount.
+			int mutrients = (int)MathUtil.RandomFromNormalDistribution (5, 1, true);
+
 			// Initialize space mass with procedural values.
 			newSpaceMass.name = "" + Random.Range (0, 100);
 			newSpaceMass.Initialize (
@@ -133,7 +142,10 @@ public class Universe : MonoBehaviour {
 				orbitalSpeed,
 				orbitsClockwise,
 				orbitRadius,
-				orbitAngle
+				orbitAngle,
+				habitable,
+				food,
+				mutrients
 			);
 		}
 

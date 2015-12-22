@@ -107,6 +107,7 @@ public class CameraDrag : MonoBehaviour {
 
 				// End motion.
 				velocity = Vector2.zero;
+				Debug.Log ("stopped");
 				movingToFocus = false;
 			}
 
@@ -116,8 +117,8 @@ public class CameraDrag : MonoBehaviour {
 		else {
 
 			// Update using control velocity.
-			transform.localPosition = new Vector3 (transform.localPosition.x - velocity.x,
-				transform.localPosition.y - velocity.y, -100);
+			transform.position = new Vector3 (transform.position.x - velocity.x,
+				transform.position.y - velocity.y, -100);
 		}
 
 		// Lock local rotation.
@@ -129,6 +130,7 @@ public class CameraDrag : MonoBehaviour {
 	/// </summary>
 	/// <param name="focusPosition">Focus position.</param>
 	public void Focus (Vector2 focusPosition) {
+		Debug.Log (focusPosition, this);
 		this.focusPosition = focusPosition;
 		movingToFocus = true;
 	}
@@ -138,10 +140,14 @@ public class CameraDrag : MonoBehaviour {
 	/// </summary>
 	/// <param name="focus">Focused transform.</param>
 	public void Follow (Transform focus) {
+		Debug.Log (focus, this);
 		this.focus = focus;
 		transform.SetParent (focus);
 		if (focus != null) {
 			Focus (focus.position);
+		}
+		else {
+			movingToFocus = false;
 		}
 	}
 }

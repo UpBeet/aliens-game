@@ -187,7 +187,7 @@ public class HideableInterfaceElement : MonoBehaviour {
 		BeginShow ();
 		
 		// If the hideable is already fully shown, call OnShow by default.
-		if (a <= 0) {
+		if (a >= 1) {
 			OnShow ();
 		}
 	}

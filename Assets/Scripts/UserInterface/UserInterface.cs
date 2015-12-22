@@ -11,6 +11,9 @@ public class UserInterface : MonoBehaviour {
 	/// </summary>
 	private static UserInterface singleton;
 
+	/// <summary>
+	/// Currently selected WorldSelectable.
+	/// </summary>
 	private static WorldSelectable selected;
 
 	/// <summary>
@@ -49,7 +52,7 @@ public class UserInterface : MonoBehaviour {
 		selected = incomingSelected;
 
 		// Get the selected planet panel.
-		HideableInterfaceElement selectedPanel = singleton.transform.Find ("Selected Panel").GetComponent<HideableInterfaceElement> ();
+		SelectedObjectPanelController selectedPanel = singleton.GetComponentInChildren<SelectedObjectPanelController> ();
 
 		// Base case: deselection.
 		if (selected == null) {
@@ -57,9 +60,8 @@ public class UserInterface : MonoBehaviour {
 			return;
 		}
 
-		// Set the name text.
-		Text selectedNameText = selectedPanel.transform.Find ("Name Text").GetComponent<Text> ();
-		selectedNameText.text = selected.name;
+		// Render information.
+		selectedPanel.ShowInformation (selected);
 
 		// Show the panel.
 		selectedPanel.Show ();
@@ -70,6 +72,16 @@ public class UserInterface : MonoBehaviour {
 		// Focus the camera on the selected planet.
 		Camera.main.GetComponent<CameraDrag> ().Follow (selected.transform);
 		Camera.main.GetComponent<CameraZoom> ().Focus (selected.GetComponentInChildren<Renderer> ().bounds.size.magnitude);
+	}
+
+	/// <summary>
+	/// Select the specified WorldSelectable after time seconds.
+	/// </summary>
+	/// <param name="incomingSelected">Incoming selected.</param>
+	/// <param name="time">Time before selection.</param>
+	public static void SelectAfterPause (WorldSelectable incomingSelected, float time) {
+		selected = incomingSelected;
+		singleton.Invoke ("Reselect", time);
 	}
 
 	/// <summary>
@@ -93,5 +105,12 @@ public class UserInterface : MonoBehaviour {
 		else {
 			Debug.LogWarning ("Can't launch this " + selected.name + " thing.");
 		}
+	}
+
+	/// <summary>
+	/// Reselect the currently selected WorldSelectable.
+	/// </summary>
+	private void Reselect () {
+		UserInterface.Select (selected);
 	}
 }

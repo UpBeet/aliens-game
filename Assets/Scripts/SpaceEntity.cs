@@ -33,6 +33,16 @@ public class SpaceEntity : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Gets a value indicating whether or not this entity is loose in space.
+	/// </summary>
+	/// <value><c>true</c> if this instance is loose; otherwise, <c>false</c>.</value>
+	public bool IsLoose {
+		get {
+			return state == SpaceEntityState.Floating;
+		}
+	}
+
+	/// <summary>
 	/// A space entity's home is the SpaceMass they are bound to.
 	/// </summary>
 	[SerializeField] private SpaceMass home = null;
